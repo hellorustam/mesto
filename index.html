@@ -15,40 +15,59 @@
             <section class="profile">
                 <img src="./images/avatar.png" alt="Изображение профиля" class="profile__avatar">
                 <div class="profile__info">
-                    <p class="profile__name">Жак-Ив Кусто <img src="./images/edit-button.svg" alt="Редактировать профиль" class="profile__edit"></p>
+                    <p class="profile__name">Жак-Ив Кусто <button class="profile__edit"></button></p>
                     <P class="profile__job">Исследователь океана</P>
                 </div>
-                <div class="profile__add-button"><img src="./images/add-button.svg" alt=""></div>
+                <button name="addButton" class="profile__add-button"><img src="./images/add-button.svg" alt=""></button>
             </section>
             <section class="elements">
                 <div class="elements__element">
                     <img src="./images/francesco-ungaro-hqAGgNsMpEY-unsplash.jpg" alt="Карачаевск" class="elements__image">
-                    <p class="elements__title">Карачаевск <img src="./images/heart.svg" alt="Избранное" class="elements__like"></p>
+                    <p class="elements__title">Карачаевск</p>
+                    <button name="likeButton" class="elements__like"><img src="./images/heart.svg" alt="Избранное"></button>
                 </div>
                 <div class="elements__element">
                     <img src="./images/ian-schneider-WymR2nYtj5M-unsplash.jpg" alt="Гора Эльбрус" class="elements__image">
-                    <p class="elements__title">Гора Эльбрус <img src="./images/heart.svg" alt="Избранное" class="elements__like"></p>
+                    <p class="elements__title">Гора Эльбрус</p>
+                    <button name="likeButton" class="elements__like"><img src="./images/heart.svg" alt="Избранное"></button>
                 </div>
                 <div class="elements__element">
                     <img src="./images/ines-alvarez-fdez-_HHjiseEuGw-unsplash.jpg" alt="Домбай" class="elements__image">
-                    <p class="elements__title">Домбай <img src="./images/heart.svg" alt="Избранное" class="elements__like"></p>
+                    <p class="elements__title">Домбай </p>
+                    <button name="likeButton" class="elements__like"><img src="./images/heart.svg" alt="Избранное"></button>
                 </div>
                 <div class="elements__element">
                     <img src="./images/marek-okon-tWWCqIMiUmg-unsplash.jpg" alt="Гора Эльбрус" class="elements__image">
-                    <p class="elements__title">Гора Эльбрус <img src="./images/heart.svg" alt="Избранное" class="elements__like"></p>
+                    <p class="elements__title">Гора Эльбрус</p>
+                    <button name="likeButton" class="elements__like"><img src="./images/heart.svg" alt="Избранное"></button>
                 </div>
                 <div class="elements__element">
                     <img src="./images/scott-webb-e3dY8laAQtA-unsplash.jpg" alt="Домбай" class="elements__image">
-                    <p class="elements__title">Домбай <img src="./images/heart.svg" alt="Избранное" class="elements__like"></p>
+                    <p class="elements__title">Домбай</p>
+                    <button name="likeButton" class="elements__like"><img src="./images/heart.svg" alt="Избранное"></button>
                 </div>
                 <div class="elements__element">
                     <img src="./images/veeterzy-9sijj5zMC1c-unsplash.jpg" alt="Карачаево-Чasdfsadfsf" class="elements__image">
                     <p class="elements__title">Карачаево - длинное название загаловка</p>
-                    <!-- <img src="./images/heart.svg" alt="Избранное" class="elements__like"> -->
+                    <button name="likeButton" class="elements__like"><img src="./images/heart.svg" alt="Избранное"></button>
                 </div>
             </section>
         </main>
-        <footer class="footer"></footer>
+        <footer class="footer">
+            <p class="footer__copyright">© 2020 Mesto Russia</p>
+        </footer>
+
+        <div class="popup">
+            <div class="popup__container">
+                <button class="popup__close"></button>
+                <form action="" class="popup__form">
+                    <p class="popup__title">Редактировать профиль</p>
+                    <input type="text" class="popup__input" placeholder="Имя Фамилия">
+                    <input type="text" class="popup__input" placeholder="Должность">
+                    <button type="submit" class="popup__button">Сохранить</button>
+                </form>
+            </div>
+        </div>
     </div>
     <script src="./scripts/scripts.js"></script>
 </body>
