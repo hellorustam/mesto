@@ -1,13 +1,12 @@
 .elements__title {
-    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
+
     font-style: normal;
     font-weight: 900;
     font-size: 24px;
     line-height: 29px;
-    margin: 24px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    margin: 24px 10px 24px 24px;
+    grid-area: title;
 }

@@ -1,0 +1,19 @@
+.popup__button {
+    background-color: black;
+    color: white;
+    padding: 14px 0;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+}
+
+.popup__button:hover {
+    opacity: .8;
+}

@@ -6,9 +6,18 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    background-color: transparent;
     border: 2px solid white;
     border-radius: 2px;
     justify-self: end;
+    outline: none;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+}
+
+.profile__add-button:hover {
+    opacity: .6;
 }
 
 @media screen and (min-width: 768px) and (max-width:1023px) {
