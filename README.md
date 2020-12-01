@@ -7,7 +7,7 @@
 Были использованны новые знания HTML & CSS & JavaScript, полученные из Яндекс Практикума
 
 ### Ссылка на проект
-[Путешествия по России](https://hellorustam.github.io/mesto/index.html)
+[MESTO - Project](https://hellorustam.github.io/mesto/index.html)
 
 
 ### Выполнил работу 
