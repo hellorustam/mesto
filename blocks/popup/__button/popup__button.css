@@ -7,11 +7,17 @@
     cursor: pointer;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 17px;
     text-align: center;
     opacity: 1;
     transition: opacity .5s ease-in-out;
+}
+
+@media screen and (min-width:320px) and (max-width:767px){
+    .popup__button {
+        font-size: 14px;
+    }
 }
 
 .popup__button:hover {

@@ -10,29 +10,38 @@ const aboutInput = document.querySelector('.popup__about');
 const formElement = document.querySelector('.popup__form');
 
 
-editButtonNode.addEventListener('click', togglePopupVis);
-closeButtonNode.addEventListener('click', togglePopupVis);
-
-
 //------------------------------------------------------------------------------
 
+// Открывает попап
+function popupOpen () {
+    popupNode.classList.add('popup_visible');
+}
 
-function togglePopupVis() {
+// Закрывает попап
+function popupClose () {
+    popupNode.classList.remove('popup_visible');
+}
+
+// Подтягивает данные из профиля и открывает попап
+function popupVis() {
     nameInput.value = profileNameNode.textContent;
     aboutInput.value = profileAboutNode.textContent;
 
-    popupNode.classList.toggle('popup_visible');
+    popupOpen();
 }
 
-
+// Отправляет форму и закрывает попап
 function formSubmitHandler (evt) {
     evt.preventDefault();
 
     profileNameNode.textContent = nameInput.value;
     profileAboutNode.textContent = aboutInput.value;
 
-    popupNode.classList.toggle('popup_visible');
+    popupClose();
 }
 
+
+editButtonNode.addEventListener('click', popupVis);
+closeButtonNode.addEventListener('click', popupClose);
 
 formElement.addEventListener('submit', formSubmitHandler);
