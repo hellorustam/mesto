@@ -1,0 +1,4 @@
+.elements__like_active {
+    opacity: 1;
+    background: url(../../../../images/heart-active.svg) center no-repeat;
+}

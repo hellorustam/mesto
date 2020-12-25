@@ -1,10 +1,10 @@
-.elements__like {
-    grid-area: like;
-    align-self: center;
-    width: 22px;
-    height: 22px;
-    margin-right: 24px;
-    background-image: url(../../../images/heart.svg);
+.elements__remove {
+    position: absolute;
+    top: 18px;
+    right: 15px;
+    width: 18px;
+    height: 20px;
+    background-image: url(../../../images/remove.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -15,6 +15,6 @@
     transition: opacity 0.5s ease-in-out;
 }
 
-.elements__like:hover {
-    opacity: 0.5;
+.elements__remove:hover {
+    opacity: 0.6;
 }
