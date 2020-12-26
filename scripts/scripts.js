@@ -17,112 +17,121 @@ const mestoTitleInput = popupAddNode.querySelector('.popup__mesto-title');
 const mestoLinkInput = popupAddNode.querySelector('.popup__mesto-link'); 
 const mestoFormElement = popupAddNode.querySelector('.popup__mesto-form');
 
+const popupImg = document.querySelector('.popup-img');
+const popupImgSource = document.querySelector('.popup__img');
+const popupImgCaption = document.querySelector('.popup__img-caption');
+
 
 const cardsContainer = document.querySelector('.elements');
 const popupImgContainer = document.querySelector('.elements__element');
+const cardTemplate = document.querySelector('#card-template').content;
 
 
 
 
-
-
-
-function popupOpen (itm) {
+function openPopup (itm) {
     itm.classList.add('popup_visible');
 }
-function popupClose (itm) {
+function closePopup (itm) {
     itm.classList.remove('popup_visible');
 }
 
 
 
 // Подтягивает данные профиля и открывает попап
-function popupProfile() {
+function openProfilePopup() {
     nameInput.value = profileNameNode.textContent;
     aboutInput.value = profileAboutNode.textContent;
 
-    popupOpen(popupProfileNode);
+    openPopup(popupProfileNode);
 }
 
 // Отправляет форму Профиля и закрывает попап 
-function formSubmitHandler (evt) {
+function submitProfileData (evt) {
     evt.preventDefault();
 
     profileNameNode.textContent = nameInput.value;
     profileAboutNode.textContent = aboutInput.value;
 
-    popupClose(popupProfileNode);
+    closePopup(popupProfileNode);
 }
 
 
-// функиция добавления карточки 
-function addCard(titleValue, imgValue) {
-    const cardTemplate = document.querySelector('#card-template').content;
+// Создание карточки 
+function createCard(titleValue, imgValue) {
     const cardElement = cardTemplate.cloneNode(true);
+    const imgElement = cardElement.querySelector('.elements__image');
 
+    imgElement.src = imgValue;
+    imgElement.alt = titleValue;
     cardElement.querySelector('.elements__title').textContent = titleValue;
-    cardElement.querySelector('.elements__image').alt = titleValue;
-    cardElement.querySelector('.elements__image').src = imgValue;
 
     cardElement.querySelector('.elements__like').addEventListener('click', function (evt) {
         evt.target.classList.toggle('elements__like_active');
     });
 
     cardElement.querySelector('.elements__remove').addEventListener('click', function(evt) {
-        let currentCard = evt.currentTarget.parentNode;
+        const currentCard = evt.currentTarget.closest('.elements__element');
         currentCard.remove();
     });
 
-    cardElement.querySelector('.popup__img-caption').textContent = titleValue;
-    cardElement.querySelector('.popup__img').alt = titleValue;
-    cardElement.querySelector('.popup__img').src = imgValue;
-    cardElement.querySelector('.popup__close').addEventListener('click', function(evt){
-        let currentCard = evt.currentTarget.parentNode.parentNode;
-        popupClose(currentCard);
-    });
-    cardElement.querySelector('.elements__image').addEventListener('click', function(evt){
-        let currentCard = evt.currentTarget.parentNode.querySelector('.popup');
-        popupOpen(currentCard);
+    imgElement.addEventListener('click', function(evt){
+        popupImgSource.src = imgValue;
+        popupImgSource.alt = titleValue;
+        popupImgCaption.textContent = titleValue;
+        openPopup(popupImg);
     });
 
-    cardsContainer.prepend(cardElement);
+    return cardElement;
+}
+
+function addCard(container, cardElement) {
+    container.prepend(cardElement);
 }
 
 
-// Открывает попап добавления карточки
-// function popupAdd() {
-//     popupOpen(popupAddNode);
-// }
 
-// // Отправляет форму Места и закрывает попап 
-function mestoFormSubmitHandler (evt) {
+// Отправляет форму Места и закрывает попап 
+function submitMestoData (evt) {
     evt.preventDefault();
 
-    addCard(mestoTitleInput.value, mestoLinkInput.value);
+    addCard(cardsContainer, createCard(mestoTitleInput.value, mestoLinkInput.value));
 
     mestoFormElement.reset();
-    popupClose(popupAddNode);
+    closePopup(popupAddNode);
 }
+
+
+// ----
 
 
 // Вывод карточек из массива
-initialCards.map(item => addCard(item.name, item.link));
+initialCards.map(item => {
+    addCard(cardsContainer, createCard(item.name, item.link));
+});
+
 
 
 // Вызов попапа редактирования профиля
-editButtonNode.addEventListener('click', popupProfile);
+editButtonNode.addEventListener('click', openProfilePopup);
 closeButtonNode.addEventListener('click', () => {
-    popupClose(popupProfileNode);
+    closePopup(popupProfileNode);
 });
-formElement.addEventListener('submit', formSubmitHandler);
+formElement.addEventListener('submit', submitProfileData);
+
 
 
 // Добавление новой карточки
 addButtonNode.addEventListener('click', () => {
-    popupOpen(popupAddNode);
+    openPopup(popupAddNode);
 });
 closeButtonAddNode.addEventListener('click', () => {
-    popupClose(popupAddNode);
+    closePopup(popupAddNode);
 });
 
-mestoFormElement.addEventListener('submit', mestoFormSubmitHandler);
+
+
+popupImg.querySelector('.popup__close').addEventListener('click', () => {
+    closePopup(popupImg);
+});
+mestoFormElement.addEventListener('submit', submitMestoData);

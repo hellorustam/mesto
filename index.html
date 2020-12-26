@@ -27,9 +27,6 @@
             <p class="footer__copyright">© 2020 Mesto Russia</p>
         </footer>
 
-
-        <!-- <div class="popup__img-elements"></div> -->
-
         <div class="popup popup-profile">
             <div class="popup__container">
                 <button type="button" aria-label="Закрыть" class="popup__close"></button>
@@ -52,6 +49,13 @@
                 </form>
             </div>
         </div>
+        <div class="popup popup-img">
+            <div class="popup__img-container">
+                <button type="button" aria-label="Закрыть" class="popup__close"></button>
+                <img src="#" alt="#" class="popup__img">
+                <h2 class="popup__img-caption"></h2>
+            </div>
+        </div>
     </div>
 
     <template id="card-template">
@@ -60,13 +64,6 @@
             <h2 class="elements__title"></h2>
             <button name="remove-button" aria-label="Удалить" type="button" class="elements__remove"></button>
             <button name="like-button" aria-label="Избранное" type="button" class="elements__like"></button>
-            <div class="popup">
-                <div class="popup__img-container">
-                    <button type="button" aria-label="Закрыть" class="popup__close"></button>
-                    <img src="#" alt="#" class="popup__img">
-                    <h2 class="popup__img-caption"></h2>
-                </div>
-            </div>
         </div>
     </template>
 
