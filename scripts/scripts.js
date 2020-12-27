@@ -47,7 +47,7 @@ function openProfilePopup() {
 }
 
 // Отправляет форму Профиля и закрывает попап 
-function submitProfileData (evt) {
+function handleProfileSubmit (evt) {
     evt.preventDefault();
 
     profileNameNode.textContent = nameInput.value;
@@ -71,8 +71,7 @@ function createCard(titleValue, imgValue) {
     });
 
     cardElement.querySelector('.elements__remove').addEventListener('click', function(evt) {
-        const currentCard = evt.currentTarget.closest('.elements__element');
-        currentCard.remove();
+        const currentCard = evt.currentTarget.closest('.elements__element').remove();
     });
 
     imgElement.addEventListener('click', function(evt){
@@ -92,7 +91,7 @@ function addCard(container, cardElement) {
 
 
 // Отправляет форму Места и закрывает попап 
-function submitMestoData (evt) {
+function handleMestoSubmit (evt) {
     evt.preventDefault();
 
     addCard(cardsContainer, createCard(mestoTitleInput.value, mestoLinkInput.value));
@@ -117,7 +116,7 @@ editButtonNode.addEventListener('click', openProfilePopup);
 closeButtonNode.addEventListener('click', () => {
     closePopup(popupProfileNode);
 });
-formElement.addEventListener('submit', submitProfileData);
+formElement.addEventListener('submit', handleProfileSubmit);
 
 
 
@@ -134,4 +133,4 @@ closeButtonAddNode.addEventListener('click', () => {
 popupImg.querySelector('.popup__close').addEventListener('click', () => {
     closePopup(popupImg);
 });
-mestoFormElement.addEventListener('submit', submitMestoData);
+mestoFormElement.addEventListener('submit', handleMestoSubmit);
