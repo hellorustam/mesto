@@ -28,32 +28,32 @@ const popupImgContainer = document.querySelector('.elements__element');
 const cardTemplate = document.querySelector('#card-template').content;
 
 
-const popupActive = (itm) => {
+const closeOvelayPopup = (itm) => {
     itm.addEventListener('click', (evt) => {
         if (evt.target.classList.contains('popup')) {
             closePopup(itm);
         }
     });
-    
-    document.addEventListener('keyup',(evt) => {
-        if (evt.key === 'Escape') {
-            closePopup(itm);
-        }
-    });
 }
 
+const closeEscPopup = (evt) => {
+    const avtivePopup = document.querySelector('.popup_visible');
+    if (evt.key === 'Escape') {
+        closePopup(avtivePopup);
+    }
+};
 
 function openPopup (itm) {
     itm.classList.add('popup_visible');
-    popupActive(itm);
+    itm.addEventListener('click', closeOvelayPopup(itm));
+    document.addEventListener('keyup', closeEscPopup)
 }
 
 function closePopup (itm) {
     itm.classList.remove('popup_visible');
-    itm.removeEventListener('click', popupActive);
-    document.removeEventListener('keyup');
+    itm.removeEventListener('click', closeOvelayPopup(itm));
+    document.removeEventListener('keyup', closeEscPopup);
 }
-
 
 
 // Подтягивает данные профиля и открывает попап
