@@ -28,7 +28,14 @@ const popupImgContainer = document.querySelector('.elements__element');
 const cardTemplate = document.querySelector('#card-template').content;
 
 
-const popupActive = (itm) => {document.addEventListener('keyup',(evt) => {
+const popupActive = (itm) => {
+    itm.addEventListener('click', (evt) => {
+        if (evt.target.classList.contains('popup')) {
+            closePopup(itm);
+        }
+    });
+    
+    document.addEventListener('keyup',(evt) => {
         if (evt.key === 'Escape') {
             closePopup(itm);
         }
@@ -38,17 +45,12 @@ const popupActive = (itm) => {document.addEventListener('keyup',(evt) => {
 
 function openPopup (itm) {
     itm.classList.add('popup_visible');
-    itm.addEventListener('click', (evt) => {
-        if (evt.target.classList.contains('popup')) {
-            closePopup(itm);
-        }
-    });
     popupActive(itm);
 }
 
 function closePopup (itm) {
     itm.classList.remove('popup_visible');
-    itm.removeEventListener('click');
+    itm.removeEventListener('click', popupActive);
     document.removeEventListener('keyup');
 }
 
