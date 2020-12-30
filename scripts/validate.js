@@ -1,14 +1,3 @@
-// const profileFormNode = document.querySelector('.popup__profile-form');
-// const nameFormInput = profileFormNode.querySelector('.popup__name');
-// const aboutFormInput = profileFormNode.querySelector('.popup__about'); 
-// const inputList = profileFormNode.querySelectorAll('.popup__input');
-// const submitButton = profileFormNode.querySelector('.popup__button');
-
-// profileFormNode.addEventListener('submit', (evt) => {
-//     evt.preventDefault();
-// })
-
-
 function showError(form, input, config) {
     const error = form.querySelector(`#${input.id}-error`);
     error.textContent = input.validationMessage;
@@ -35,7 +24,7 @@ function setButtonState(button, isActive, config) {
         button.disabled = false;
     } else {
         button.classList.add(config.buttonInvalidClass);
-        button.disabled = 'disabled';
+        button.disabled = true;
     }
 }
 

@@ -5,6 +5,7 @@
     border-radius: 2px;
     color: #000000;
     background-color: white;
+    cursor: default;
 }
 
 .popup__button_invalid:hover {

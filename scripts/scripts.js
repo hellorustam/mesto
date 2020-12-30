@@ -28,27 +28,30 @@ const popupImgContainer = document.querySelector('.elements__element');
 const cardTemplate = document.querySelector('#card-template').content;
 
 
+const popupActive = (itm) => {document.addEventListener('keyup',(evt) => {
+        if (evt.key === 'Escape') {
+            closePopup(itm);
+        }
+    });
+}
 
 
 function openPopup (itm) {
     itm.classList.add('popup_visible');
-}
-function closePopup (itm) {
-    itm.classList.remove('popup_visible');
-}
-
-popupNode.forEach((itm) => {
     itm.addEventListener('click', (evt) => {
         if (evt.target.classList.contains('popup')) {
             closePopup(itm);
         }
     });
-    document.addEventListener('keyup',(evt) => {
-        if (evt.key === 'Escape') {
-            closePopup(itm);
-        }
-    });
-});
+    popupActive(itm);
+}
+
+function closePopup (itm) {
+    itm.classList.remove('popup_visible');
+    itm.removeEventListener('click');
+    document.removeEventListener('keyup');
+}
+
 
 
 // Подтягивает данные профиля и открывает попап
@@ -84,7 +87,7 @@ function createCard(titleValue, imgValue) {
     });
 
     cardElement.querySelector('.elements__remove').addEventListener('click', (evt) => {
-        const currentCard = evt.currentTarget.closest('.elements__element').remove();
+        evt.currentTarget.closest('.elements__element').remove();
     });
 
     imgElement.addEventListener('click', function(evt){
@@ -104,10 +107,15 @@ function addCard(container, cardElement) {
 
 
 // Отправляет форму Места и закрывает попап 
-function handleMestoSubmit (evt) {
+function handleMestoSubmit(evt) {
+    const submitButton = mestoFormElement.querySelector('.popup__button');
+
     evt.preventDefault();
 
     addCard(cardsContainer, createCard(mestoTitleInput.value, mestoLinkInput.value));
+
+    submitButton.classList.add('popup__button_invalid');
+    submitButton.disabled = true;
 
     mestoFormElement.reset();
     closePopup(popupAddNode);
