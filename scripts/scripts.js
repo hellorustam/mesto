@@ -33,46 +33,42 @@ const cardsContainer = document.querySelector('.elements');
 const cardTemplate = document.querySelector('#card-template').content;
 
 
-<<<<<<< HEAD
-const closeOvelayPopup = (itm) => {
-    itm.addEventListener('click', (evt) => {
-        if (evt.target.classList.contains('popup')) {
-=======
+//---
+// const qS = (node) => document.querySelector(node);
 
+// const selectorsObj = {
+//     addButt: '.profile__name',
+//     profileNameNode: '.fasdf'
+// }
+
+// editButtonNode = qS(selectorsObj.addButt);
+//---
 
 
 const popupActive = (itm) => {document.addEventListener('keyup',(evt) => {
         if (evt.key === 'Escape') {
->>>>>>> develop
             closePopup(itm);
         }
     });
 }
 
-const closeEscPopup = (evt) => {
-    const avtivePopup = document.querySelector('.popup_visible');
-    if (evt.key === 'Escape') {
-        closePopup(avtivePopup);
-    }
-};
 
 function openPopup (itm) {
     itm.classList.add('popup_visible');
-    itm.addEventListener('click', closeOvelayPopup(itm));
-    document.addEventListener('keyup', closeEscPopup)
+    itm.addEventListener('click', (evt) => {
+        if (evt.target.classList.contains('popup')) {
+            closePopup(itm);
+        }
+    });
+    popupActive(itm);
 }
 
 function closePopup (itm) {
-<<<<<<< HEAD
-    itm.classList.remove('popup_visible');
-    itm.removeEventListener('click', closeOvelayPopup(itm));
-    document.removeEventListener('keyup', closeEscPopup);
-=======
         itm.classList.remove('popup_visible');
         itm.removeEventListener('click');
         document.removeEventListener('keyup');
->>>>>>> develop
 }
+
 
 
 // Подтягивает данные профиля и открывает попап
