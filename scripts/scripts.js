@@ -38,16 +38,7 @@ const closeOvelayPopup = (itm) => {
     itm.addEventListener('click', (evt) => {
         if (evt.target.classList.contains('popup')) {
 =======
-//---
-// const qS = (node) => document.querySelector(node);
 
-// const selectorsObj = {
-//     addButt: '.profile__name',
-//     profileNameNode: '.fasdf'
-// }
-
-// editButtonNode = qS(selectorsObj.addButt);
-//---
 
 
 const popupActive = (itm) => {document.addEventListener('keyup',(evt) => {
