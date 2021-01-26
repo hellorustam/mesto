@@ -1,10 +1,13 @@
+import { initialCards } from './initial-cards.js';
+
+
 const editButtonNode = document.querySelector('.profile__edit');
 const profileNameNode = document.querySelector('.profile__name');
 const profileAboutNode = document.querySelector('.profile__about');
 const addButtonNode = document.querySelector('.profile__add-button');
 
 
-const popupNode = document.querySelectorAll('.popup');
+// const popupNode = document.querySelectorAll('.popup');
 const popupProfileNode = document.querySelector('.popup-profile');
 const closeButtonNode = popupProfileNode.querySelector('.popup__close');
 const nameInput = popupProfileNode.querySelector('.popup__name');
@@ -24,8 +27,20 @@ const popupImgCaption = document.querySelector('.popup__img-caption');
 
 
 const cardsContainer = document.querySelector('.elements');
-const popupImgContainer = document.querySelector('.elements__element');
+// const popupImgContainer = document.querySelector('.elements__element');
 const cardTemplate = document.querySelector('#card-template').content;
+
+
+//---
+// const qS = (node) => document.querySelector(node);
+
+// const selectorsObj = {
+//     addButt: '.profile__name',
+//     profileNameNode: '.fasdf'
+// }
+
+// editButtonNode = qS(selectorsObj.addButt);
+//---
 
 
 const popupActive = (itm) => {document.addEventListener('keyup',(evt) => {
@@ -47,9 +62,9 @@ function openPopup (itm) {
 }
 
 function closePopup (itm) {
-    itm.classList.remove('popup_visible');
-    itm.removeEventListener('click');
-    document.removeEventListener('keyup');
+        itm.classList.remove('popup_visible');
+        itm.removeEventListener('click');
+        document.removeEventListener('keyup');
 }
 
 

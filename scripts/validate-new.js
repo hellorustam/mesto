@@ -7,13 +7,14 @@ const validationConfig = {
     popUpMestoForm: '.popup__mesto-form'
 };
 
+
 class Validation {
-    constructor(config, form){
+    constructor(config, formElement){
         this._config = config;
-        this._form = form;
+        this._form = formElement;
+        this._button = this._form.querySelector(this._config.submitButtonSelector)
     }
 
-    
     showError(input) {
         const error = this._form.querySelector(`#${input.id}-error`);
         error.textContent = input.validationMessage;
@@ -34,13 +35,13 @@ class Validation {
         }
     }
 
-    setButtonState(button, isActive) {
+    setButtonState(isActive) {
         if(isActive) {
-            button.classList.remove(this._config.buttonInvalidClass);
-            button.disabled = false;
+            this._button.classList.remove(this._config.buttonInvalidClass);
+            this._button.disabled = false;
         } else {
-            button.classList.add(this._config.buttonInvalidClass);
-            button.disabled = true;
+            this._button.classList.add(this._config.buttonInvalidClass);
+            this._button.disabled = true;
         }
     }
 
@@ -48,31 +49,27 @@ class Validation {
 
     setEventListener() {
         const inputList = this._form.querySelectorAll(this._config.inputSelector);
-        const submitButton = this._form.querySelector(this._config.submitButtonSelector);
 
         inputList.forEach(input => {
-            input.addEventListener('input', (evt) => {    
+            input.addEventListener('input', () => {    
                 checkInputValidity(input);
-                setButtonState(submitButton, form.checkValidity());
+                setButtonState(this._form.checkValidity());
             });
         });
     }
 
     enableValidation() {
             setEventListener();
-
             this._form.addEventListener('submit', (evt) => {
                 evt.preventDefault();
+                console.log('Форма отправлена')
             });
-
-            const submitButton = this._form.querySelector(this._config.submitButtonSelector);
-            setButtonState(submitButton, this._form.checkValidity());
+            setButtonState(this._form.checkValidity());
     }
 }
 
 
-const formAdd = document.querySelector(validationConfig.formSelector);
+const formAdd = document.querySelector(validationConfig.popUpMestoForm);
 const form = new Validation(validationConfig, formAdd);
 
-
-// enableValidation(validationConfig);
+console.log(form);
