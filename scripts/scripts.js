@@ -1,4 +1,6 @@
 import { initialCards } from './initial-cards.js';
+import { validationConfig } from './config.js';
+import { Validation } from './validate.js';
 
 
 const editButtonNode = document.querySelector('.profile__edit');
@@ -170,3 +172,14 @@ popupImg.querySelector('.popup__close').addEventListener('click', () => {
     closePopup(popupImg);
 });
 mestoFormElement.addEventListener('submit', handleMestoSubmit);
+
+
+
+
+const formAdd = document.querySelector(validationConfig.popUpMestoForm);
+const formMesto = new Validation(validationConfig, formAdd);
+formMesto.enableValidation();
+
+const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
+const formProfile = new Validation(validationConfig, fromEdit);
+formProfile.enableValidation();
