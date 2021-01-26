@@ -1,10 +1,15 @@
+import { initialCards } from './initial-cards.js';
+import { validationConfig } from './config.js';
+import { Validation } from './validate.js';
+
+
 const editButtonNode = document.querySelector('.profile__edit');
 const profileNameNode = document.querySelector('.profile__name');
 const profileAboutNode = document.querySelector('.profile__about');
 const addButtonNode = document.querySelector('.profile__add-button');
 
 
-const popupNode = document.querySelectorAll('.popup');
+// const popupNode = document.querySelectorAll('.popup');
 const popupProfileNode = document.querySelector('.popup-profile');
 const closeButtonNode = popupProfileNode.querySelector('.popup__close');
 const nameInput = popupProfileNode.querySelector('.popup__name');
@@ -24,13 +29,30 @@ const popupImgCaption = document.querySelector('.popup__img-caption');
 
 
 const cardsContainer = document.querySelector('.elements');
-const popupImgContainer = document.querySelector('.elements__element');
+// const popupImgContainer = document.querySelector('.elements__element');
 const cardTemplate = document.querySelector('#card-template').content;
 
 
+<<<<<<< HEAD
 const closeOvelayPopup = (itm) => {
     itm.addEventListener('click', (evt) => {
         if (evt.target.classList.contains('popup')) {
+=======
+//---
+// const qS = (node) => document.querySelector(node);
+
+// const selectorsObj = {
+//     addButt: '.profile__name',
+//     profileNameNode: '.fasdf'
+// }
+
+// editButtonNode = qS(selectorsObj.addButt);
+//---
+
+
+const popupActive = (itm) => {document.addEventListener('keyup',(evt) => {
+        if (evt.key === 'Escape') {
+>>>>>>> develop
             closePopup(itm);
         }
     });
@@ -50,9 +72,15 @@ function openPopup (itm) {
 }
 
 function closePopup (itm) {
+<<<<<<< HEAD
     itm.classList.remove('popup_visible');
     itm.removeEventListener('click', closeOvelayPopup(itm));
     document.removeEventListener('keyup', closeEscPopup);
+=======
+        itm.classList.remove('popup_visible');
+        itm.removeEventListener('click');
+        document.removeEventListener('keyup');
+>>>>>>> develop
 }
 
 
@@ -157,3 +185,14 @@ popupImg.querySelector('.popup__close').addEventListener('click', () => {
     closePopup(popupImg);
 });
 mestoFormElement.addEventListener('submit', handleMestoSubmit);
+
+
+
+
+const formAdd = document.querySelector(validationConfig.popUpMestoForm);
+const formMesto = new Validation(validationConfig, formAdd);
+formMesto.enableValidation();
+
+const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
+const formProfile = new Validation(validationConfig, fromEdit);
+formProfile.enableValidation();
