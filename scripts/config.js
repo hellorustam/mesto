@@ -84,6 +84,7 @@ export {
   popupImgCaption,
   cardsContainer,
   cardTemplate,
+  selectorsObj,
 };
 
 // const editButtonNode = document.querySelector(".profile__edit");

@@ -20,8 +20,10 @@ import {
   popupImgCaption,
   cardsContainer,
   cardTemplate,
+  selectorsObj,
 } from "./config.js";
 import { FormValidator } from "./FormValidator.js";
+import { Card } from "./Card.js";
 
 const popupActive = (itm) => {
   document.addEventListener("keyup", (evt) => {
@@ -43,8 +45,8 @@ function openPopup(itm) {
 
 function closePopup(itm) {
   itm.classList.remove("popup_visible");
-  itm.removeEventListener("click");
-  document.removeEventListener("keyup");
+  // itm.removeEventListener("click");
+  // document.removeEventListener("keyup");
 }
 
 // Подтягивает данные профиля и открывает попап
@@ -65,36 +67,40 @@ function handleProfileSubmit(evt) {
   closePopup(popupProfileNode);
 }
 
+// --------------------------------------------------------------------
 // Создание карточки
-function createCard(titleValue, imgValue) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const imgElement = cardElement.querySelector(".elements__image");
 
-  imgElement.src = imgValue;
-  imgElement.alt = titleValue;
-  cardElement.querySelector(".elements__title").textContent = titleValue;
+// function createCard(titleValue, imgValue) {
+//   const cardElement = cardTemplate.cloneNode(true);
+//   const imgElement = cardElement.querySelector(".elements__image");
 
-  cardElement
-    .querySelector(".elements__like")
-    .addEventListener("click", (evt) => {
-      evt.target.classList.toggle("elements__like_active");
-    });
+//   imgElement.src = imgValue;
+//   imgElement.alt = titleValue;
+//   cardElement.querySelector(".elements__title").textContent = titleValue;
 
-  cardElement
-    .querySelector(".elements__remove")
-    .addEventListener("click", (evt) => {
-      evt.currentTarget.closest(".elements__element").remove();
-    });
+//   cardElement
+//     .querySelector(".elements__like")
+//     .addEventListener("click", (evt) => {
+//       evt.target.classList.toggle("elements__like_active");
+//     });
 
-  imgElement.addEventListener("click", function (evt) {
-    popupImgSource.src = imgValue;
-    popupImgSource.alt = titleValue;
-    popupImgCaption.textContent = titleValue;
-    openPopup(popupImg);
-  });
+//   cardElement
+//     .querySelector(".elements__remove")
+//     .addEventListener("click", (evt) => {
+//       evt.currentTarget.closest(".elements__element").remove();
+//     });
 
-  return cardElement;
-}
+//   imgElement.addEventListener("click", function (evt) {
+//     popupImgSource.src = imgValue;
+//     popupImgSource.alt = titleValue;
+//     popupImgCaption.textContent = titleValue;
+//     openPopup(popupImg);
+//   });
+
+//   return cardElement;
+// }
+
+// --------------------------------------------------------------------
 
 function addCard(container, cardElement) {
   container.prepend(cardElement);
@@ -108,7 +114,13 @@ function handleMestoSubmit(evt) {
 
   addCard(
     cardsContainer,
-    createCard(mestoTitleInput.value, mestoLinkInput.value)
+    new Card(
+      mestoTitleInput.value,
+      mestoLinkInput.value,
+      selectorsObj,
+      cardTemplate
+    ).createCard()
+    // createCard(mestoTitleInput.value, mestoLinkInput.value)
   );
 
   submitButton.classList.add("popup__button_invalid");
@@ -122,7 +134,11 @@ function handleMestoSubmit(evt) {
 
 // Вывод карточек из массива
 initialCards.map((item) => {
-  addCard(cardsContainer, createCard(item.name, item.link));
+  addCard(
+    cardsContainer,
+    new Card(item.name, item.link, selectorsObj).createCard()
+    // createCard(item.name, item.link)
+  );
 });
 
 // Вызов попапа редактирования профиля
