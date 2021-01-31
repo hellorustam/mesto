@@ -51,7 +51,9 @@ const aboutInput = qSel(selectorsObj.aboutInput);
 const formElement = qSel(selectorsObj.formElement);
 
 const popupAddNode = qSel(selectorsObj.popupAddNode);
-const closeButtonAddNode = qSel(selectorsObj.closeButtonAddNode);
+const closeButtonAddNode = popupAddNode.querySelector(
+  selectorsObj.closeButtonNode
+);
 const mestoTitleInput = qSel(selectorsObj.mestoTitleInput);
 const mestoLinkInput = qSel(selectorsObj.mestoLinkInput);
 const mestoFormElement = qSel(selectorsObj.mestoFormElement);
