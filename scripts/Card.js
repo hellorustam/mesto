@@ -1,11 +1,26 @@
 import { openPopup } from "./utils.js";
 
+const popupImgSource = document.querySelector(".popup__img");
+const popupImgCaption = document.querySelector(".popup__img-caption");
+const popupImg = document.querySelector(".popup-img");
+
 class Card {
   constructor(text, img, config) {
     this._text = text;
     this._img = img;
     this._config = config;
-    this._card = document.querySelector(this._config.cardTemplate).content;
+    this._popUpCard = function popUpCard(node) {
+      node.addEventListener("click", function () {
+        popupImgSource.src = this.src;
+        popupImgSource.alt = this.alt;
+        popupImgCaption.textContent = this.alt;
+        openPopup(popupImg);
+      });
+    };
+  }
+
+  _getTemplate() {
+    return document.querySelector(this._config.cardTemplate).content;
   }
 
   _likeCard(node) {
@@ -20,21 +35,8 @@ class Card {
     });
   }
 
-  _popUpCard(node) {
-    node.addEventListener("click", function () {
-      const popupImgSource = document.querySelector(".popup__img");
-      const popupImgCaption = document.querySelector(".popup__img-caption");
-      const popupImg = document.querySelector(".popup-img");
-
-      popupImgSource.src = this.src;
-      popupImgSource.alt = this.alt;
-      popupImgCaption.textContent = this.alt;
-      openPopup(popupImg);
-    });
-  }
-
   createCard() {
-    const cardElement = this._card.cloneNode(true);
+    const cardElement = this._getTemplate().cloneNode(true);
     const imgElement = cardElement.querySelector(".elements__image");
 
     imgElement.src = this._img;
