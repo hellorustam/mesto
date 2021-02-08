@@ -39,7 +39,7 @@ class FormValidator {
     const inputList = this._form.querySelectorAll(this._config.inputSelector);
 
     inputList.forEach((input) => {
-      input.addEventListener("input", (evt) => {
+      input.addEventListener("input", () => {
         this._checkInputValidity(input);
         this._setButtonState(this._form.checkValidity());
       });

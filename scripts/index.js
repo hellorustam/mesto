@@ -97,6 +97,7 @@ addButtonNode.addEventListener("click", () => {
 });
 closeButtonAddNode.addEventListener("click", () => {
   closePopup(popupAddNode);
+  mestoFormElement.reset();
 });
 
 popupImg.querySelector(".popup__close").addEventListener("click", () => {
