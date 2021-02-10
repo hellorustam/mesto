@@ -16,15 +16,18 @@ import {
   mestoLinkInput,
   mestoFormElement,
   popupImg,
-  // popupImgSource,
-  // popupImgCaption,
+  popupImgSource,
+  popupImgCaption,
   cardsContainer,
-  // cardTemplate,
+  cardTemplate,
   selectorsObj,
 } from "./config.js";
-import { FormValidator } from "./FormValidator.js";
+
 import { Card } from "../components/Card.js";
-import { openPopup, closePopup, addCard } from "./utils.js";
+import { Popup } from "../components/Popup.js";
+import { FormValidator } from "../components/FormValidator.js";
+
+import { addCard } from "./utils.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
 const formProfile = new FormValidator(validationConfig, fromEdit);
@@ -97,11 +100,10 @@ addButtonNode.addEventListener("click", () => {
 });
 closeButtonAddNode.addEventListener("click", () => {
   closePopup(popupAddNode);
-  // mestoFormElement.reset();
 });
 
 popupImg.querySelector(".popup__close").addEventListener("click", () => {
-  closePopup(popupImg);
+  new Popup(popupImg).closePopup(popupImg);
 });
 mestoFormElement.addEventListener("submit", handleMestoSubmit);
 

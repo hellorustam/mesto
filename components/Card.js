@@ -1,25 +1,10 @@
-// import { openPopup } from "../scripts/utils.js";
-import { Popup } from "../components/Popup.js";
+import { PopupWithImage } from "../components/PopupWithImage.js";
 
-const popupImgSource = document.querySelector(".popup__img");
-const popupImgCaption = document.querySelector(".popup__img-caption");
-const popupImg = document.querySelector(".popup-img");
-
-class Card {
+export class Card {
   constructor(text, img, config) {
     this._text = text;
     this._img = img;
     this._config = config;
-    this._popUpCard = function popUpCard(node) {
-      node.addEventListener("click", function () {
-        popupImgSource.src = this.src;
-        popupImgSource.alt = this.alt;
-        popupImgCaption.textContent = this.alt;
-        // openPopup(popupImg);
-        const imgP = new Popup(popupImg);
-        imgP.openPopup(popupImg);
-      });
-    };
   }
 
   _getTemplate() {
@@ -48,10 +33,8 @@ class Card {
 
     this._likeCard(cardElement);
     this._removeCard(cardElement);
-    this._popUpCard(imgElement);
+    new PopupWithImage(imgElement).openPopup(imgElement);
 
     return cardElement;
   }
 }
-
-export { Card };
