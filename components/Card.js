@@ -1,4 +1,5 @@
-import { openPopup } from "./utils.js";
+// import { openPopup } from "../scripts/utils.js";
+import { Popup } from "../components/Popup.js";
 
 const popupImgSource = document.querySelector(".popup__img");
 const popupImgCaption = document.querySelector(".popup__img-caption");
@@ -14,7 +15,9 @@ class Card {
         popupImgSource.src = this.src;
         popupImgSource.alt = this.alt;
         popupImgCaption.textContent = this.alt;
-        openPopup(popupImg);
+        // openPopup(popupImg);
+        const imgP = new Popup(popupImg);
+        imgP.openPopup(popupImg);
       });
     };
   }

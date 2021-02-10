@@ -16,14 +16,14 @@ import {
   mestoLinkInput,
   mestoFormElement,
   popupImg,
-  popupImgSource,
-  popupImgCaption,
+  // popupImgSource,
+  // popupImgCaption,
   cardsContainer,
-  cardTemplate,
+  // cardTemplate,
   selectorsObj,
 } from "./config.js";
 import { FormValidator } from "./FormValidator.js";
-import { Card } from "./Card.js";
+import { Card } from "../components/Card.js";
 import { openPopup, closePopup, addCard } from "./utils.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
@@ -97,7 +97,7 @@ addButtonNode.addEventListener("click", () => {
 });
 closeButtonAddNode.addEventListener("click", () => {
   closePopup(popupAddNode);
-  mestoFormElement.reset();
+  // mestoFormElement.reset();
 });
 
 popupImg.querySelector(".popup__close").addEventListener("click", () => {
