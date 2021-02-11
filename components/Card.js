@@ -33,7 +33,7 @@ export class Card {
 
     this._likeCard(cardElement);
     this._removeCard(cardElement);
-    new PopupWithImage(imgElement).openPopup(imgElement);
+    new PopupWithImage(imgElement).openPopup();
 
     return cardElement;
   }
