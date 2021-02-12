@@ -25,35 +25,25 @@ import {
 
 import { Card } from "../components/Card.js";
 import { Popup } from "../components/Popup.js";
+import { PopupWithForm } from "../components/PopupWithForm.js";
 import { FormValidator } from "../components/FormValidator.js";
+import { UserInfo } from "../components/UserInfo.js";
 
 import { addCard } from "./utils.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
 const formProfile = new FormValidator(validationConfig, fromEdit);
+
 const formAdd = document.querySelector(validationConfig.popUpMestoForm);
 const formMesto = new FormValidator(validationConfig, formAdd);
 
-// Подтягивает данные профиля и открывает попап
-function openProfilePopup() {
-  nameInput.value = profileNameNode.textContent;
-  aboutInput.value = profileAboutNode.textContent;
+const profileMesto = new PopupWithForm(popupProfileNode);
 
-  // formProfile.enableValidation();
-  openPopup(popupProfileNode);
-}
-
-// ----
-
-// Отправляет форму Профиля и закрывает попап
-function handleProfileSubmit(evt) {
-  evt.preventDefault();
-
-  profileNameNode.textContent = nameInput.value;
-  profileAboutNode.textContent = aboutInput.value;
-
-  closePopup(popupProfileNode);
-}
+const userInfo = new UserInfo(
+  profileNameNode.textContent,
+  profileAboutNode.textContent
+);
+userInfo.setUserInfo(profileNameNode.textContent, profileAboutNode.textContent);
 
 // Отправляет форму Места и закрывает попап
 function handleMestoSubmit(evt) {
@@ -73,8 +63,8 @@ function handleMestoSubmit(evt) {
   submitButton.classList.add("popup__button_invalid");
   submitButton.disabled = true;
 
+  new Popup(popupAddNode).closePopup(popupAddNode);
   mestoFormElement.reset();
-  closePopup(popupAddNode);
 }
 
 // ----
@@ -88,23 +78,45 @@ initialCards.map((item) => {
 });
 
 // Вызов попапа редактирования профиля
-editButtonNode.addEventListener("click", openProfilePopup);
-closeButtonNode.addEventListener("click", () => {
-  closePopup(popupProfileNode);
+editButtonNode.addEventListener("click", () => {
+  userInfo.setUserInfo(
+    profileNameNode.textContent,
+    profileAboutNode.textContent
+  );
+
+  nameInput.value = userInfo.getUserInfo().name;
+  aboutInput.value = userInfo.getUserInfo().about;
+
+  profileMesto.openPopup(nameInput, aboutInput);
+  profileMesto.setEventListeners();
 });
-formElement.addEventListener("submit", handleProfileSubmit);
+
+formElement.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+
+  userInfo.setUserInfo(profileNameNode, profileAboutNode);
+  userInfo.updateUserInfo(nameInput.value, aboutInput.value);
+
+  profileMesto.closePopup(popupProfileNode);
+});
+
+closeButtonNode.addEventListener("click", () => {
+  new Popup(popupProfileNode).closePopup(popupProfileNode);
+});
 
 // Добавление новой карточки
 addButtonNode.addEventListener("click", () => {
-  openPopup(popupAddNode);
+  new Popup(popupAddNode).openPopup(popupAddNode);
+  new Popup(popupAddNode).setEventListeners(popupAddNode);
 });
 closeButtonAddNode.addEventListener("click", () => {
-  closePopup(popupAddNode);
+  new Popup(popupAddNode).closePopup(popupAddNode);
 });
 
 popupImg.querySelector(".popup__close").addEventListener("click", () => {
   new Popup(popupImg).closePopup(popupImg);
 });
+
 mestoFormElement.addEventListener("submit", handleMestoSubmit);
 
 // ----
