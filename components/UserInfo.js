@@ -9,7 +9,6 @@ export class UserInfo {
   setUserInfo(newName, newAbout) {
     this._name = newName;
     this._about = newAbout;
-    // updateUserInfo();
   }
 
   updateUserInfo(nameInput, aboutInput) {

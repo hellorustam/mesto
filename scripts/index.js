@@ -28,14 +28,29 @@ import { Popup } from "../components/Popup.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { UserInfo } from "../components/UserInfo.js";
+import { Section } from "../components/Section.js";
 
-import { addCard } from "./utils.js";
+// import { addCard } from "./utils.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
 const formProfile = new FormValidator(validationConfig, fromEdit);
 
 const formAdd = document.querySelector(validationConfig.popUpMestoForm);
 const formMesto = new FormValidator(validationConfig, formAdd);
+
+const section = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      section.addItem(
+        new Card(item.name, item.link, selectorsObj).createCard()
+      );
+    },
+  },
+  cardsContainer
+);
+
+section.renderAll();
 
 const profileMesto = new PopupWithForm(popupProfileNode);
 
@@ -51,8 +66,7 @@ function handleMestoSubmit(evt) {
 
   evt.preventDefault();
 
-  addCard(
-    cardsContainer,
+  section.addItem(
     new Card(
       mestoTitleInput.value,
       mestoLinkInput.value,
@@ -68,14 +82,6 @@ function handleMestoSubmit(evt) {
 }
 
 // ----
-
-// Вывод карточек из массива
-initialCards.map((item) => {
-  addCard(
-    cardsContainer,
-    new Card(item.name, item.link, selectorsObj).createCard()
-  );
-});
 
 // Вызов попапа редактирования профиля
 editButtonNode.addEventListener("click", () => {
@@ -104,7 +110,7 @@ closeButtonNode.addEventListener("click", () => {
   new Popup(popupProfileNode).closePopup(popupProfileNode);
 });
 
-// Добавление новой карточки
+// Кнопка добавление новой карточки
 addButtonNode.addEventListener("click", () => {
   new Popup(popupAddNode).openPopup(popupAddNode);
   new Popup(popupAddNode).setEventListeners(popupAddNode);

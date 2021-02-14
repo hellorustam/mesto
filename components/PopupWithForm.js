@@ -1,42 +1,29 @@
 import { Popup } from "./Popup.js";
 
 export class PopupWithForm extends Popup {
-  constructor(selector) {
+  constructor(selector, handleSubmit) {
     super(selector);
-    // this._submitForm = (evt) => {
-    //   evt.preventDefault();
-    //   profileNameNode.textContent = nameInput.value;
-    //   profileAboutNode.textContent = aboutInput.value;
-    // };
+    this._handleSubmit = handleSubmit;
   }
 
-  _getInputValues(nameInput, aboutInput) {
-    nameInput.value = profileNameNode.textContent;
-    aboutInput.value = profileAboutNode.textContent;
-  }
-
-  // openProfile(name, about) {
-  //   super.openPopup();
-  //   _getInputValues(name, about);
-
-  //   setEventListeners();
-  // }
-
-  closePopup() {
-    this._selector.classList.remove("popup_visible");
-    // this._selector.reset();
+  _getInputValues() {
+    this._inputList = this._selector.querySelectorAll(".popup__input");
+    this._inputData = {};
+    this._inputList.forEach((element) => {
+      this._inputData[element.name] = element.value;
+    });
   }
 
   setEventListeners() {
-    this._selector.addEventListener("click", (evt) => {
-      if (evt.target.classList.contains("popup")) {
-        this.closePopup(this._selector);
-      }
+    this._form = this._selector.querySelector(".popup__form");
+    this._form.addEventListener("submit", () => {
+      this._handleSubmit(this._getInputValues());
     });
-    this._handleEscClose(this._selector);
+    super.setEventListeners();
   }
 
-  editProfile() {
-    editButtonNode.addEventListener("click", openPopup(this._selector));
+  closePopup() {
+    this._selector.querySelector(".popup__form").reset();
+    super.closePopup();
   }
 }
