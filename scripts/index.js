@@ -16,10 +16,10 @@ import {
   mestoLinkInput,
   mestoFormElement,
   popupImg,
-  popupImgSource,
-  popupImgCaption,
+  // popupImgSource,
+  // popupImgCaption,
   cardsContainer,
-  cardTemplate,
+  // cardTemplate,
   selectorsObj,
 } from "./config.js";
 
@@ -29,8 +29,6 @@ import { PopupWithForm } from "../components/PopupWithForm.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { Section } from "../components/Section.js";
-
-// import { addCard } from "./utils.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
 const formProfile = new FormValidator(validationConfig, fromEdit);
@@ -52,18 +50,42 @@ const section = new Section(
 
 section.renderAll();
 
-const profileMesto = new PopupWithForm(popupProfileNode);
+// const mestoPopup = new PopupWithForm({
+//   selector: popupAddNode,
+//   handleSubmit: (evt) => {
+//     const submitButton = mestoFormElement.querySelector(".popup__button");
+//     evt.preventDefault();
+//     section.addItem(
+//       new Card(
+//         mestoTitleInput.value,
+//         mestoLinkInput.value,
+//         selectorsObj
+//       ).createCard()
+//     );
+//     submitButton.classList.add("popup__button_invalid");
+//     submitButton.disabled = true;
+//     // new Popup(popupAddNode).closePopup(popupAddNode);
+//     // mestoFormElement.reset();
+//   },
+// });
+
+const profilePopup = new PopupWithForm({
+  selector: popupProfileNode,
+  handleSubmit: () => {
+    userInfo.setUserInfo(profileNameNode, profileAboutNode);
+    userInfo.updateUserInfo(nameInput.value, aboutInput.value);
+  },
+});
 
 const userInfo = new UserInfo(
   profileNameNode.textContent,
   profileAboutNode.textContent
 );
+
 userInfo.setUserInfo(profileNameNode.textContent, profileAboutNode.textContent);
 
 // Отправляет форму Места и закрывает попап
 function handleMestoSubmit(evt) {
-  const submitButton = mestoFormElement.querySelector(".popup__button");
-
   evt.preventDefault();
 
   section.addItem(
@@ -74,14 +96,13 @@ function handleMestoSubmit(evt) {
     ).createCard()
   );
 
+  const submitButton = mestoFormElement.querySelector(".popup__button");
   submitButton.classList.add("popup__button_invalid");
   submitButton.disabled = true;
 
   new Popup(popupAddNode).closePopup(popupAddNode);
-  mestoFormElement.reset();
+  // mestoFormElement.reset();
 }
-
-// ----
 
 // Вызов попапа редактирования профиля
 editButtonNode.addEventListener("click", () => {
@@ -93,8 +114,8 @@ editButtonNode.addEventListener("click", () => {
   nameInput.value = userInfo.getUserInfo().name;
   aboutInput.value = userInfo.getUserInfo().about;
 
-  profileMesto.openPopup(nameInput, aboutInput);
-  profileMesto.setEventListeners();
+  profilePopup.openPopup(nameInput, aboutInput);
+  profilePopup.setEventListeners();
 });
 
 formElement.addEventListener("submit", (evt) => {
@@ -103,18 +124,23 @@ formElement.addEventListener("submit", (evt) => {
   userInfo.setUserInfo(profileNameNode, profileAboutNode);
   userInfo.updateUserInfo(nameInput.value, aboutInput.value);
 
-  profileMesto.closePopup(popupProfileNode);
+  new Popup(popupProfileNode).closePopup(popupProfileNode);
+  // profilePopup.closePopup();
 });
 
 closeButtonNode.addEventListener("click", () => {
-  new Popup(popupProfileNode).closePopup(popupProfileNode);
+  // new Popup(popupProfileNode).closePopup(popupProfileNode);
+  profilePopup.closePopup();
 });
+
+// ----
 
 // Кнопка добавление новой карточки
 addButtonNode.addEventListener("click", () => {
   new Popup(popupAddNode).openPopup(popupAddNode);
   new Popup(popupAddNode).setEventListeners(popupAddNode);
 });
+
 closeButtonAddNode.addEventListener("click", () => {
   new Popup(popupAddNode).closePopup(popupAddNode);
 });
@@ -123,9 +149,11 @@ popupImg.querySelector(".popup__close").addEventListener("click", () => {
   new Popup(popupImg).closePopup(popupImg);
 });
 
-mestoFormElement.addEventListener("submit", handleMestoSubmit);
-
 // ----
+
+mestoFormElement.addEventListener("submit", handleMestoSubmit);
+// mestoPopup.setEventListeners();
+profilePopup.setEventListeners();
 
 formMesto.enableValidation();
 formProfile.enableValidation();
