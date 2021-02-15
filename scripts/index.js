@@ -48,26 +48,21 @@ const section = new Section(
   cardsContainer
 );
 
-section.renderAll();
+const mestoPopup = new PopupWithForm({
+  selector: popupAddNode,
+  handleSubmit: () => {
+    section.addItem(
+      new Card(
+        mestoTitleInput.value,
+        mestoLinkInput.value,
+        selectorsObj
+      ).createCard()
+    );
 
-// const mestoPopup = new PopupWithForm({
-//   selector: popupAddNode,
-//   handleSubmit: (evt) => {
-//     const submitButton = mestoFormElement.querySelector(".popup__button");
-//     evt.preventDefault();
-//     section.addItem(
-//       new Card(
-//         mestoTitleInput.value,
-//         mestoLinkInput.value,
-//         selectorsObj
-//       ).createCard()
-//     );
-//     submitButton.classList.add("popup__button_invalid");
-//     submitButton.disabled = true;
-//     // new Popup(popupAddNode).closePopup(popupAddNode);
-//     // mestoFormElement.reset();
-//   },
-// });
+    mestoPopup.closePopup();
+    // new Popup(popupAddNode).closePopup(popupAddNode);
+  },
+});
 
 const profilePopup = new PopupWithForm({
   selector: popupProfileNode,
@@ -83,26 +78,6 @@ const userInfo = new UserInfo(
 );
 
 userInfo.setUserInfo(profileNameNode.textContent, profileAboutNode.textContent);
-
-// Отправляет форму Места и закрывает попап
-function handleMestoSubmit(evt) {
-  evt.preventDefault();
-
-  section.addItem(
-    new Card(
-      mestoTitleInput.value,
-      mestoLinkInput.value,
-      selectorsObj
-    ).createCard()
-  );
-
-  const submitButton = mestoFormElement.querySelector(".popup__button");
-  submitButton.classList.add("popup__button_invalid");
-  submitButton.disabled = true;
-
-  new Popup(popupAddNode).closePopup(popupAddNode);
-  // mestoFormElement.reset();
-}
 
 // Вызов попапа редактирования профиля
 editButtonNode.addEventListener("click", () => {
@@ -125,11 +100,9 @@ formElement.addEventListener("submit", (evt) => {
   userInfo.updateUserInfo(nameInput.value, aboutInput.value);
 
   new Popup(popupProfileNode).closePopup(popupProfileNode);
-  // profilePopup.closePopup();
 });
 
 closeButtonNode.addEventListener("click", () => {
-  // new Popup(popupProfileNode).closePopup(popupProfileNode);
   profilePopup.closePopup();
 });
 
@@ -142,17 +115,20 @@ addButtonNode.addEventListener("click", () => {
 });
 
 closeButtonAddNode.addEventListener("click", () => {
-  new Popup(popupAddNode).closePopup(popupAddNode);
+  mestoPopup.closePopup();
 });
 
+// Закрытие попапа с картинкой
 popupImg.querySelector(".popup__close").addEventListener("click", () => {
   new Popup(popupImg).closePopup(popupImg);
 });
 
 // ----
 
-mestoFormElement.addEventListener("submit", handleMestoSubmit);
-// mestoPopup.setEventListeners();
+section.renderAll();
+
+mestoFormElement.addEventListener("submit", mestoPopup.setEventListeners());
+
 profilePopup.setEventListeners();
 
 formMesto.enableValidation();
