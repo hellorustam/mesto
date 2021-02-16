@@ -38,6 +38,13 @@ class FormValidator {
   _setEventListener() {
     const inputList = this._form.querySelectorAll(this._config.inputSelector);
 
+    this._form.addEventListener("reset", () => {
+      inputList.forEach((inputElement) => {
+        this._hideError(inputElement);
+        this._setButtonState(false);
+      });
+    });
+
     inputList.forEach((input) => {
       input.addEventListener("input", () => {
         this._checkInputValidity(input);
