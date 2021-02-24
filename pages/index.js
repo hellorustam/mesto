@@ -1,6 +1,6 @@
-import "../pages/index.css";
+import "./index.css";
 
-import { initialCards } from "./initial-cards.js";
+import { initialCards } from "../scripts/initial-cards.js";
 import {
   validationConfig,
   editButtonNode,
@@ -23,7 +23,7 @@ import {
   cardsContainer,
   // cardTemplate,
   selectorsObj,
-} from "./config.js";
+} from "../scripts/config.js";
 
 import { Card } from "../components/Card.js";
 import { Popup } from "../components/Popup.js";
