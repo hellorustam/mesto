@@ -1,18 +1,17 @@
 import { Popup } from "./Popup.js";
 
 export class PopupWithImage extends Popup {
-  openPopup() {
-    this._selector.addEventListener("click", function () {
-      const popupImgSource = document.querySelector(".popup__img");
-      const popupImgCaption = document.querySelector(".popup__img-caption");
-      const popupImg = document.querySelector(".popup-img");
+  constructor(popup) {
+    super(popup);
+    this._popupImgSource = this._popup.querySelector(".popup__img");
+    this._popupImgCaption = this._popup.querySelector(".popup__img-caption");
+  }
 
-      popupImgSource.src = this.src;
-      popupImgSource.alt = this.alt;
-      popupImgCaption.textContent = this.alt;
+  openPopup(dataCard) {
+    this._popupImgSource.src = dataCard.link;
+    this._popupImgSource.alt = dataCard.name;
+    this._popupImgCaption.textContent = dataCard.name;
 
-      new Popup(popupImg).openPopup();
-      new Popup(popupImg).setEventListeners();
-    });
+    super.openPopup();
   }
 }

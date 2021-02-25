@@ -1,19 +1,20 @@
 export class UserInfo {
-  constructor({ name, about }) {
+  constructor(name, about) {
     this._nameEdit = name;
     this._aboutEdit = about;
     this._name = "";
     this._about = "";
   }
 
-  setUserInfo(newName, newAbout) {
-    this._name = newName;
-    this._about = newAbout;
+  setUserInfo(data) {
+    this._name = data.name;
+    this._about = data.about;
   }
 
-  updateUserInfo(nameInput, aboutInput) {
-    this._name.textContent = nameInput;
-    this._about.textContent = aboutInput;
+  updateUserInfo() {
+    console.log(this._nameEdit);
+    this._nameEdit.textContent = this._name;
+    this._aboutEdit.textContent = this._about;
   }
 
   getUserInfo() {

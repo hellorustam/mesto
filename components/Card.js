@@ -1,10 +1,10 @@
-import { PopupWithImage } from "../components/PopupWithImage.js";
-
 export class Card {
-  constructor(text, img, config) {
-    this._text = text;
-    this._img = img;
+  constructor(data, config, handleImagePopup) {
+    this._data = data;
+    this._text = data.name;
+    this._img = data.link;
     this._config = config;
+    this._handleImagePopup = handleImagePopup;
   }
 
   _getTemplate() {
@@ -23,6 +23,12 @@ export class Card {
     });
   }
 
+  _openImage(node) {
+    node.querySelector(".elements__image").addEventListener("click", (evt) => {
+      this._handleImagePopup(this._data);
+    });
+  }
+
   createCard() {
     const cardElement = this._getTemplate().cloneNode(true);
     const imgElement = cardElement.querySelector(".elements__image");
@@ -33,7 +39,8 @@ export class Card {
 
     this._likeCard(cardElement);
     this._removeCard(cardElement);
-    new PopupWithImage(imgElement).openPopup();
+    // new PopupWithImage(imgElement).openPopup();
+    this._openImage(cardElement);
 
     return cardElement;
   }
