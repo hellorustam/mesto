@@ -15,6 +15,7 @@ const selectorsObj = {
   editButtonNode: ".profile__edit",
   profileNameNode: ".profile__name",
   profileAboutNode: ".profile__about",
+  profileAvatar: ".profile__avatar",
   addButtonNode: ".profile__add-button",
 
   popupProfileNode: ".popup-profile",
@@ -42,6 +43,7 @@ const selectorsObj = {
 const editButtonNode = qSel(selectorsObj.editButtonNode);
 const profileNameNode = qSel(selectorsObj.profileNameNode);
 const profileAboutNode = qSel(selectorsObj.profileAboutNode);
+const profileAvatar = qSel(selectorsObj.profileAvatar);
 const addButtonNode = qSel(selectorsObj.addButtonNode);
 
 const popupProfileNode = qSel(selectorsObj.popupProfileNode);
@@ -70,6 +72,7 @@ export {
   editButtonNode,
   profileNameNode,
   profileAboutNode,
+  profileAvatar,
   addButtonNode,
   popupProfileNode,
   closeButtonNode,

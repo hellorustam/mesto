@@ -6,6 +6,7 @@ import {
   editButtonNode,
   profileNameNode,
   profileAboutNode,
+  profileAvatar,
   addButtonNode,
   popupProfileNode,
   nameInput,
@@ -21,7 +22,8 @@ import { PopupWithForm } from "../components/PopupWithForm.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { Section } from "../components/Section.js";
-import { PopupWithImage } from "../components/PopupWithImage";
+import { PopupWithImage } from "../components/PopupWithImage.js";
+import { Api } from "../components/Api.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
 const formProfile = new FormValidator(validationConfig, fromEdit);
@@ -30,6 +32,46 @@ const formAdd = document.querySelector(validationConfig.popUpMestoForm);
 const formMesto = new FormValidator(validationConfig, formAdd);
 
 const popupWithImage = new PopupWithImage(popupImg);
+
+const api = new Api({
+  address: "https://mesto.nomoreparties.co/v1",
+  token: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
+  groupID: "cohort-22",
+});
+
+const userData = {};
+
+api
+  .getUserData()
+  .then((data) => {
+    userData.name = data.name;
+    userData.about = data.about;
+    userData.avatar = data.avatar;
+    const { name, about, avatar } = data;
+    profileNameNode.textContent = name;
+    profileAboutNode.textContent = about;
+    profileAvatar.src = avatar;
+  })
+  .catch((err) =>
+    console.log("Ошибка при получении данных о пользователе: " + err)
+  );
+
+// profileNameNode.textContent = userData.name;
+// profileAboutNode.textContent = about;
+
+// console.log(profileNameNode.textContent);
+
+console.log(userData);
+
+// profileNameNode.textContent = userData.then((data) => {
+//   const { name, about, avatar } = data;
+//   profileNameNode.textContent = name;
+//   profileAboutNode.textContent = about;
+// });
+
+api
+  .getCards()
+  .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
 function openPopup(dataCard) {
   popupWithImage.openPopup(dataCard);
@@ -78,10 +120,12 @@ userInfo.setUserInfo({
 editButtonNode.addEventListener("click", () => {
   const getUserInfo = userInfo.getUserInfo();
 
-  nameInput.value = getUserInfo.name;
-  aboutInput.value = getUserInfo.about;
+  nameInput.value = userData.name;
+  aboutInput.value = userData.about;
+  // nameInput.value = getUserInfo.name;
+  // aboutInput.value = getUserInfo.about;
 
-  profilePopup.openPopup(nameInput, aboutInput);
+  profilePopup.openPopup();
 });
 
 // ----

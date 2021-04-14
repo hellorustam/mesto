@@ -12,7 +12,6 @@ export class UserInfo {
   }
 
   updateUserInfo() {
-    console.log(this._nameEdit);
     this._nameEdit.textContent = this._name;
     this._aboutEdit.textContent = this._about;
   }
