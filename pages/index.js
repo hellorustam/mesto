@@ -46,11 +46,12 @@ api
   .then((data) => {
     userData.name = data.name;
     userData.about = data.about;
-    userData.avatar = data.avatar;
+    // userData.avatar = data.avatar;
     const { name, about, avatar } = data;
     profileNameNode.textContent = name;
     profileAboutNode.textContent = about;
-    profileAvatar.src = avatar;
+    profileAvatar.src = "";
+    profileAvatar.style.backgroundImage = `url('${avatar}')`;
   })
   .catch((err) =>
     console.log("Ошибка при получении данных о пользователе: " + err)
