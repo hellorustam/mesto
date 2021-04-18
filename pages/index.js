@@ -43,28 +43,21 @@ const api = new Api({});
 //   // about: userData.about,
 // });
 
-// api.getUserData().then((data) => {
-//   // renderUserDataInContent(data);
-//   profileNameNode.textContent = data?.name;
-//   profileAboutNode.textContent = data?.about;
-//   return data;
-// });
-
 function renderUserDataInContent(data) {
-  profileNameNode.textContent = data.name;
-  profileAboutNode.textContent = data.about;
+  profileNameNode.textContent = data?.name;
+  profileAboutNode.textContent = data?.about;
   profileAvatar.src = "";
-  profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
+  profileAvatar.style.backgroundImage = `url('${data?.avatar}')`;
 }
 
-const userData = {};
+// const userData = {};
 
 api
   .getUserData()
   .then((data) => {
-    userData.name = data.name;
-    userData.about = data.about;
-    userData.avatar = data.avatar;
+    // userData.name = data.name;
+    // userData.about = data.about;
+    // userData.avatar = data.avatar;
     // const { name, about, avatar } = data;
     renderUserDataInContent(data);
   })
@@ -72,39 +65,29 @@ api
     console.log("Ошибка при получении данных о пользователе: " + err)
   );
 
-console.log(userData);
+const newInitialCardsArr = [];
 
-// const newInitialCards = [];
+api
+  .getCards()
+  .then((data) => {
+    data.forEach((element) => {
+      newInitialCardsArr.push(element);
+    });
 
-// api
-//   .getCards()
-//   .then((data) => {
-//     data.forEach((element) => {
-//       newInitialCards.push(element);
-//     });
+    const section = new Section(
+      {
+        // items: initialCards,
+        items: newInitialCardsArr,
+        renderer: (item) => {
+          section.addItem(createCard(item));
+        },
+      },
+      cardsContainer
+    );
 
-//     console.log(newInitialCards);
-//     console.log(newInitialCards[2]);
-//   })
-//   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
-// const newInitialCards = api
-//   .getCards()
-//   .then((data) => {
-//     // return Promise.resolve(data);
-//     return data;
-//   })
-//   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
-// console.log(newInitialCards);
-
-// async function newInitialCards() {
-//   return await api
-//     .getCards()
-//     .catch((err) => console.log("Ошибка при получении карточек: " + err));
-// }
-
-// newInitialCards().then(console.log(data));
+    section.renderAll();
+  })
+  .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
 //----
 
@@ -125,16 +108,16 @@ const createCard = (data) => {
   return new Card(data, selectorsObj, openPopup).createCard();
 };
 
-const section = new Section(
-  {
-    items: initialCards,
-    // items: newInitialCards(),
-    renderer: (item) => {
-      section.addItem(createCard(item));
-    },
-  },
-  cardsContainer
-);
+// const section = new Section(
+//   {
+//     // items: initialCards,
+//     // items: newInitialCards(),
+//     renderer: (item) => {
+//       section.addItem(createCard(item));
+//     },
+//   },
+//   cardsContainer
+// );
 
 const mestoPopup = new PopupWithForm({
   popup: popupAddNode,
@@ -163,12 +146,12 @@ userInfo.setUserInfo({
 
 // Вызов попапа редактирования профиля
 editButtonNode.addEventListener("click", () => {
-  // const getUserInfo = userInfo.getUserInfo();
+  const getUserInfo = userInfo.getUserInfo();
 
-  nameInput.value = userData.name;
-  aboutInput.value = userData.about;
-  // nameInput.value = getUserInfo.name;
-  // aboutInput.value = getUserInfo.about;
+  // nameInput.value = userData.name;
+  // aboutInput.value = userData.about;
+  nameInput.value = getUserInfo.name;
+  aboutInput.value = getUserInfo.about;
 
   profilePopup.openPopup();
 });
@@ -180,7 +163,7 @@ addButtonNode.addEventListener("click", () => {
   mestoPopup.openPopup();
 });
 
-section.renderAll();
+// section.renderAll();
 
 mestoPopup.setEventListeners();
 profilePopup.setEventListeners();
