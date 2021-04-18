@@ -39,7 +39,6 @@ export class Card {
 
     this._likeCard(cardElement);
     this._removeCard(cardElement);
-    // new PopupWithImage(imgElement).openPopup();
     this._openImage(cardElement);
 
     return cardElement;
