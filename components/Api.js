@@ -51,4 +51,13 @@ export class Api {
       }
     );
   }
+
+  postCard(data) {
+    return fetch(apiConfig.urls.CARDS, data).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.status}`);
+    });
+  }
 }

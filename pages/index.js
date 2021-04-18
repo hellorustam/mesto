@@ -1,6 +1,6 @@
 import "./index.css";
 
-import { initialCards } from "../scripts/initial-cards.js";
+// import { initialCards } from "../scripts/initial-cards.js";
 import {
   validationConfig,
   editButtonNode,
@@ -51,25 +51,15 @@ function renderUserDataInContent(data) {
   profileAvatar.style.backgroundImage = `url('${data?.avatar}')`;
 }
 
-// const userData = {};
-
 api
   .getUserData()
   .then((data) => {
-    // userData.name = data.name;
-    // userData.about = data.about;
-    // userData.avatar = data.avatar;
-    // const { name, about, avatar } = data;
     renderUserDataInContent(data);
 
     // Вызов попапа редактирования профиля
     editButtonNode.addEventListener("click", () => {
-      // const getUserInfo = userInfo.getUserInfo();
-
       nameInput.value = data.name;
       aboutInput.value = data.about;
-      // nameInput.value = getUserInfo.name;
-      // aboutInput.value = getUserInfo.about;
 
       profilePopup.openPopup();
     });
@@ -102,27 +92,6 @@ api
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
 //----
-// const bodyUserData = {
-//   name: "Rustam",
-//   about: "designer",
-// };
-
-// const changeUserBodyData = {
-//   method: "PATCH",
-//   headers: {
-//     authorization: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
-//     "Content-Type": "application/json",
-//   },
-//   // body: JSON.stringify({
-//   //   name: changeUserBodyData.name,
-//   //   about: changeUserBodyData.about,
-//   // }),
-//   body: JSON.stringify(bodyUserData),
-// };
-
-// api
-//   .changeUserData(changeUserBodyData)
-//   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
 function openPopup(dataCard) {
   popupWithImage.openPopup(dataCard);
@@ -146,8 +115,28 @@ const createCard = (data) => {
 const mestoPopup = new PopupWithForm({
   popup: popupAddNode,
   handleSubmit: (item) => {
-    section.addItem(createCard(item));
+    const newCardsData = {
+      name: item.name,
+      link: item.link,
+    };
 
+    function submitNewCard() {
+      const postNewCard = {
+        method: "POST",
+        headers: {
+          authorization: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newCardsData),
+      };
+
+      api
+        .postCard(postNewCard)
+        .catch((err) => console.log("Ошибка при получении карточек: " + err));
+    }
+    submitNewCard();
+
+    section.addItem(createCard(item));
     mestoPopup.closePopup();
   },
 });
