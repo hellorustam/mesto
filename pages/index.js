@@ -24,6 +24,7 @@ import { UserInfo } from "../components/UserInfo.js";
 import { Section } from "../components/Section.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
 import { Api } from "../components/Api.js";
+import { apiConfig } from "../scripts/apiConfig.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
 const formProfile = new FormValidator(validationConfig, fromEdit);
@@ -60,6 +61,18 @@ api
     // userData.avatar = data.avatar;
     // const { name, about, avatar } = data;
     renderUserDataInContent(data);
+
+    // Вызов попапа редактирования профиля
+    editButtonNode.addEventListener("click", () => {
+      // const getUserInfo = userInfo.getUserInfo();
+
+      nameInput.value = data.name;
+      aboutInput.value = data.about;
+      // nameInput.value = getUserInfo.name;
+      // aboutInput.value = getUserInfo.about;
+
+      profilePopup.openPopup();
+    });
   })
   .catch((err) =>
     console.log("Ошибка при получении данных о пользователе: " + err)
@@ -67,38 +80,49 @@ api
 
 const newInitialCardsArr = [];
 
+const section = new Section(
+  {
+    // items: initialCards,
+    items: newInitialCardsArr,
+    renderer: (item) => {
+      section.addItem(createCard(item));
+    },
+  },
+  cardsContainer
+);
+
 api
   .getCards()
   .then((data) => {
     data.forEach((element) => {
       newInitialCardsArr.push(element);
     });
-
-    const section = new Section(
-      {
-        // items: initialCards,
-        items: newInitialCardsArr,
-        renderer: (item) => {
-          section.addItem(createCard(item));
-        },
-      },
-      cardsContainer
-    );
-
     section.renderAll();
   })
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
 //----
+// const bodyUserData = {
+//   name: "Rustam",
+//   about: "designer",
+// };
 
-// const newUserData =
+// const changeUserBodyData = {
+//   method: "PATCH",
+//   headers: {
+//     authorization: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
+//     "Content-Type": "application/json",
+//   },
+//   // body: JSON.stringify({
+//   //   name: changeUserBodyData.name,
+//   //   about: changeUserBodyData.about,
+//   // }),
+//   body: JSON.stringify(bodyUserData),
+// };
+
 // api
-//   .changeUserData()
-//   // .then((data) => console.log(data))
+//   .changeUserData(changeUserBodyData)
 //   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
-// console.log(newUserData);
-// console.log(newUserData.then((data) => data));
 
 function openPopup(dataCard) {
   popupWithImage.openPopup(dataCard);
@@ -133,6 +157,36 @@ const profilePopup = new PopupWithForm({
   handleSubmit: (data) => {
     userInfo.setUserInfo(data);
     userInfo.updateUserInfo();
+
+    const bodyUserData = {
+      name: data.name,
+      about: data.about,
+    };
+
+    function submitNewUserInfo() {
+      const changeUserBodyData = {
+        method: "PATCH",
+        headers: {
+          authorization: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bodyUserData),
+      };
+
+      api
+        .changeUserData(changeUserBodyData)
+        // .then((data) => console.log(data.json()))
+        .catch((err) => console.log("Ошибка при получении карточек: " + err));
+    }
+    submitNewUserInfo();
+
+    // bodyUserData.name = data.name;
+    // bodyUserData.about = data.about;
+
+    // api
+    //   .changeUserData(changeUserBodyData)
+    //   .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
     profilePopup.closePopup();
   },
 });
@@ -144,17 +198,17 @@ userInfo.setUserInfo({
   about: profileAboutNode.textContent,
 });
 
-// Вызов попапа редактирования профиля
-editButtonNode.addEventListener("click", () => {
-  const getUserInfo = userInfo.getUserInfo();
+// // Вызов попапа редактирования профиля
+// editButtonNode.addEventListener("click", () => {
+//   const getUserInfo = userInfo.getUserInfo();
 
-  // nameInput.value = userData.name;
-  // aboutInput.value = userData.about;
-  nameInput.value = getUserInfo.name;
-  aboutInput.value = getUserInfo.about;
+//   // nameInput.value = userData.name;
+//   // aboutInput.value = userData.about;
+//   nameInput.value = getUserInfo.name;
+//   aboutInput.value = getUserInfo.about;
 
-  profilePopup.openPopup();
-});
+//   profilePopup.openPopup();
+// });
 
 // ----
 

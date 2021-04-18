@@ -1,6 +1,4 @@
-import { apiConfig } from "../scripts/apiConfig";
-// console.log(apiConfig);
-// console.log(apiConfig.getUserDataHeaders);
+import { apiConfig } from "../scripts/apiConfig.js";
 
 export class Api {
   // constructor({ address, token, groupID, name, about }) {
@@ -9,14 +7,6 @@ export class Api {
   //   this._groupID = groupID;
   //   // this._name = name;
   //   // this._about = about;
-  // }
-
-  // getUserData() {
-  //   return fetch(apiConfig.urls.USER, apiConfig.getUserDataHeaders).then(
-  //     (response) => {
-  //       return response.json();
-  //     }
-  //   );
   // }
 
   getUserData() {
@@ -47,26 +37,9 @@ export class Api {
   //   // });
   // }
 
-  // changeUserData() {
-  //   return fetch(`${this._address}/${this._groupID}/users/me`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       authorization: this._token,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       name: "Rustam",
-  //       about: "dez",
-  //       // name: this._name,
-  //       // about: this._about,
-  //     }),
-  //   }).then((response) => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     }
-  //     return Promise.reject(`Ошибка: ${response.status}`);
-  //   });
-  // }
+  changeUserData(data) {
+    return fetch(apiConfig.urls.USER, data);
+  }
 
   getCards() {
     return fetch(apiConfig.urls.CARDS, apiConfig.getCardsHeaders).then(

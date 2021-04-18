@@ -1,3 +1,6 @@
+// import { changeUserBodyData } from "../pages/index.js";
+// console.log(changeUserBodyData);
+
 const TOKEN = "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e";
 
 const CONFIG_API = {
@@ -25,11 +28,13 @@ const CHANGE_USER_DATA_HEADERS = {
     authorization: TOKEN,
     "Content-Type": "application/json",
   },
+  // body: JSON.stringify({
+  //   name: changeUserBodyData.name,
+  //   about: changeUserBodyData.about,
+  // }),
   body: JSON.stringify({
     name: "Rustam",
-    about: "dez",
-    // name: this._name,
-    // about: this._about,
+    about: "designer111",
   }),
 };
 
