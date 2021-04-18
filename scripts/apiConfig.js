@@ -19,46 +19,40 @@ const GET_USER_DATA_HEADERS = {
   },
 };
 
-const CHANGE_USER_DATA_HEADERS = {
-  method: "PATCH",
-  headers: {
-    authorization: TOKEN,
-    "Content-Type": "application/json",
-  },
-  // body: JSON.stringify({
-  //   name: changeUserBodyData.name,
-  //   about: changeUserBodyData.about,
-  // }),
-  body: JSON.stringify({
-    name: "Rustam",
-    about: "designer111",
-  }),
+const CHANGE_USER_DATA_HEADERS = (data) => {
+  return {
+    method: "PATCH",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
 };
 
 const GET_CARDS_HEADERS = {
   headers: {
     authorization: TOKEN,
-    // "Content-Type": "application/json",
   },
 };
 
-const POST_CARD_HEADERS = {
-  method: "PATCH",
-  headers: {
-    authorization: TOKEN,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: "Осень",
-    link:
-      "https://images.unsplash.com/photo-1582654743835-38111ca39927?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2475&q=80",
-  }),
-};
+// const POST_CARD_HEADERS = {
+//   method: "PATCH",
+//   headers: {
+//     authorization: TOKEN,
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({
+//     name: "Осень",
+//     link:
+//       "https://images.unsplash.com/photo-1582654743835-38111ca39927?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2475&q=80",
+//   }),
+// };
 
 export const apiConfig = {
   urls: URLS,
   getUserDataHeaders: GET_USER_DATA_HEADERS,
   changeUserDataHeaders: CHANGE_USER_DATA_HEADERS,
   getCardsHeaders: GET_CARDS_HEADERS,
-  postCardHeaders: POST_CARD_HEADERS,
+  // postCardHeaders: POST_CARD_HEADERS,
 };

@@ -60,4 +60,18 @@ export class Api {
       return Promise.reject(`Ошибка: ${response.status}`);
     });
   }
+
+  // likeCard() {
+  //   return fetch(apiConfig.urls.CARDS, apiConfig.getCardsHeaders)
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         return response.json();
+  //       }
+  //       return Promise.reject(`Ошибка: ${response.status}`);
+  //     })
+  //     .then((data) => {
+  //       // console.log(data);
+  //       return data[1].likes;
+  //     });
+  // }
 }

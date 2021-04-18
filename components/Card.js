@@ -12,7 +12,11 @@ export class Card {
   }
 
   _likeCard(node) {
-    node.querySelector(".elements__like").addEventListener("click", (evt) => {
+    const elementLike = node.querySelector(".elements__like");
+
+    // elementLike.textContent =
+
+    elementLike.addEventListener("click", (evt) => {
       evt.target.classList.toggle("elements__like_active");
     });
   }
@@ -32,9 +36,12 @@ export class Card {
   createCard() {
     const cardElement = this._getTemplate().cloneNode(true);
     const imgElement = cardElement.querySelector(".elements__image");
+    const likeElement = cardElement.querySelector(".elements__count_like");
 
     imgElement.src = this._img;
     imgElement.alt = this._text;
+    likeElement.textContent = this._data.likes.length;
+    // console.log(this._data.likes.length);
     cardElement.querySelector(".elements__title").textContent = this._text;
 
     this._likeCard(cardElement);

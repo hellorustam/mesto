@@ -1,20 +1,20 @@
 .elements__like {
-    grid-area: like;
-    align-self: center;
-    width: 22px;
-    height: 22px;
-    margin-right: 24px;
-    background-image: url(../../../images/heart.svg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: 0;
-    outline: none;
-    cursor: pointer;
-    opacity: 1;
-    transition: opacity 0.5s ease-in-out;
+  grid-area: like;
+  align-self: center;
+  width: 22px;
+  height: 64px;
+  margin-right: 24px;
+  background-image: url(../../../images/heart.svg);
+  background-position: top;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .elements__like:hover {
-    opacity: 0.5;
+  opacity: 0.5;
 }

@@ -88,6 +88,7 @@ api
       newInitialCardsArr.push(element);
     });
     section.renderAll();
+    // console.log(newInitialCardsArr);
   })
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
@@ -147,27 +148,31 @@ const profilePopup = new PopupWithForm({
     userInfo.setUserInfo(data);
     userInfo.updateUserInfo();
 
+    // ----
+
     const bodyUserData = {
       name: data.name,
       about: data.about,
     };
 
-    function submitNewUserInfo() {
-      const changeUserBodyData = {
-        method: "PATCH",
-        headers: {
-          authorization: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyUserData),
-      };
+    const changeUserBodyData = apiConfig.changeUserDataHeaders(bodyUserData);
 
-      api
-        .changeUserData(changeUserBodyData)
-        // .then((data) => console.log(data.json()))
-        .catch((err) => console.log("Ошибка при получении карточек: " + err));
-    }
-    submitNewUserInfo();
+    // function submitNewUserInfo() {
+    //   const changeUserBodyData = {
+    //     method: "PATCH",
+    //     headers: {
+    //       authorization: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(bodyUserData),
+    //   };
+
+    api
+      .changeUserData(changeUserBodyData)
+      // .then((data) => console.log(data.json()))
+      .catch((err) => console.log("Ошибка при получении карточек: " + err));
+    // }
+    // submitNewUserInfo();
 
     // bodyUserData.name = data.name;
     // bodyUserData.about = data.about;
@@ -175,6 +180,8 @@ const profilePopup = new PopupWithForm({
     // api
     //   .changeUserData(changeUserBodyData)
     //   .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
+    // ----
 
     profilePopup.closePopup();
   },
@@ -186,6 +193,10 @@ userInfo.setUserInfo({
   name: profileNameNode.textContent,
   about: profileAboutNode.textContent,
 });
+
+// api.likeCard().then((data) => {
+//   console.log(data);
+// });
 
 // // Вызов попапа редактирования профиля
 // editButtonNode.addEventListener("click", () => {
