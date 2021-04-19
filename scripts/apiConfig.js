@@ -10,6 +10,7 @@ const PREF_API = `${CONFIG_API.ADDRESS}/${CONFIG_API.GROUP_ID}`;
 const URLS = {
   USER: `${PREF_API}/users/me`,
   CARDS: `${PREF_API}/cards`,
+  LIKES: `${PREF_API}/cards/likes`,
 };
 
 const GET_USER_DATA_HEADERS = {
@@ -36,17 +37,47 @@ const GET_CARDS_HEADERS = {
   },
 };
 
-// const POST_CARD_HEADERS = {
-//   method: "PATCH",
-//   headers: {
-//     authorization: TOKEN,
-//     "Content-Type": "application/json",
-//   },
-//   body: JSON.stringify({
-//     name: "Осень",
-//     link:
-//       "https://images.unsplash.com/photo-1582654743835-38111ca39927?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2475&q=80",
-//   }),
+const POST_CARD_HEADERS = (data) => {
+  return {
+    method: "POST",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+};
+
+const ADD_LIKE_CARD = (data) => {
+  return {
+    method: "POST",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+};
+
+const REMOVE_LIKE_CARD = (data) => {
+  return {
+    method: "PUT",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+};
+
+// const REMOVE_LIKE_CARD = () => {
+//   return {
+//     method: "DELETE",
+//     headers: {
+//       authorization: TOKEN,
+//       "Content-Type": "application/json",
+//     },
+//   };
 // };
 
 export const apiConfig = {
@@ -54,5 +85,7 @@ export const apiConfig = {
   getUserDataHeaders: GET_USER_DATA_HEADERS,
   changeUserDataHeaders: CHANGE_USER_DATA_HEADERS,
   getCardsHeaders: GET_CARDS_HEADERS,
-  // postCardHeaders: POST_CARD_HEADERS,
+  postCardHeaders: POST_CARD_HEADERS,
+  addLikeCard: ADD_LIKE_CARD,
+  removeLikeCard: REMOVE_LIKE_CARD,
 };

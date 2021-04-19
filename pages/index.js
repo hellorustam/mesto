@@ -1,6 +1,7 @@
 import "./index.css";
 
 // import { initialCards } from "../scripts/initial-cards.js";
+
 import {
   validationConfig,
   editButtonNode,
@@ -72,7 +73,6 @@ const newInitialCardsArr = [];
 
 const section = new Section(
   {
-    // items: initialCards,
     items: newInitialCardsArr,
     renderer: (item) => {
       section.addItem(createCard(item));
@@ -88,7 +88,6 @@ api
       newInitialCardsArr.push(element);
     });
     section.renderAll();
-    // console.log(newInitialCardsArr);
   })
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
@@ -102,42 +101,20 @@ const createCard = (data) => {
   return new Card(data, selectorsObj, openPopup).createCard();
 };
 
-// const section = new Section(
-//   {
-//     // items: initialCards,
-//     // items: newInitialCards(),
-//     renderer: (item) => {
-//       section.addItem(createCard(item));
-//     },
-//   },
-//   cardsContainer
-// );
-
 const mestoPopup = new PopupWithForm({
   popup: popupAddNode,
   handleSubmit: (item) => {
     const newCardsData = {
       name: item.name,
       link: item.link,
+      likes: [],
     };
 
-    function submitNewCard() {
-      const postNewCard = {
-        method: "POST",
-        headers: {
-          authorization: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newCardsData),
-      };
+    api
+      .postCard(newCardsData)
+      .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
-      api
-        .postCard(postNewCard)
-        .catch((err) => console.log("Ошибка при получении карточек: " + err));
-    }
-    submitNewCard();
-
-    section.addItem(createCard(item));
+    section.addItem(createCard(newCardsData));
     mestoPopup.closePopup();
   },
 });
@@ -148,40 +125,14 @@ const profilePopup = new PopupWithForm({
     userInfo.setUserInfo(data);
     userInfo.updateUserInfo();
 
-    // ----
-
     const bodyUserData = {
       name: data.name,
       about: data.about,
     };
 
-    const changeUserBodyData = apiConfig.changeUserDataHeaders(bodyUserData);
-
-    // function submitNewUserInfo() {
-    //   const changeUserBodyData = {
-    //     method: "PATCH",
-    //     headers: {
-    //       authorization: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(bodyUserData),
-    //   };
-
     api
-      .changeUserData(changeUserBodyData)
-      // .then((data) => console.log(data.json()))
+      .changeUserData(bodyUserData)
       .catch((err) => console.log("Ошибка при получении карточек: " + err));
-    // }
-    // submitNewUserInfo();
-
-    // bodyUserData.name = data.name;
-    // bodyUserData.about = data.about;
-
-    // api
-    //   .changeUserData(changeUserBodyData)
-    //   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
-    // ----
 
     profilePopup.closePopup();
   },
@@ -193,10 +144,6 @@ userInfo.setUserInfo({
   name: profileNameNode.textContent,
   about: profileAboutNode.textContent,
 });
-
-// api.likeCard().then((data) => {
-//   console.log(data);
-// });
 
 // // Вызов попапа редактирования профиля
 // editButtonNode.addEventListener("click", () => {
@@ -216,8 +163,6 @@ userInfo.setUserInfo({
 addButtonNode.addEventListener("click", () => {
   mestoPopup.openPopup();
 });
-
-// section.renderAll();
 
 mestoPopup.setEventListeners();
 profilePopup.setEventListeners();

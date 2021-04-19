@@ -1,9 +1,11 @@
 .elements__like {
   grid-area: like;
   align-self: center;
-  width: 22px;
+  width: 50px;
   height: 64px;
-  margin-right: 24px;
+  text-align: center;
+  margin-top: 12px;
+  margin-right: 12px;
   background-image: url(../../../images/heart.svg);
   background-position: top;
   background-repeat: no-repeat;
