@@ -19,40 +19,34 @@ export class Card {
     const elementLike = node.querySelector(".elements__like");
 
     elementLike.addEventListener("click", (evt) => {
-      const eventTarget = evt.target;
-      const likeButt = eventTarget.querySelector(".elements__like");
+      // const eventTarget = evt.target;
+      // const likeActive = eventTarget.querySelector(".elements__like_active");
+      const likeCounter = elementLike.querySelector(".elements__count_like");
 
-      if (likeButt === null) {
-        const likes = {
-          likes: ++this._data.likes.length,
-        };
+      // api.getUserData().then((dataUser) => {
+      //   this._data.likes.forEach((i) => {
+      //     if (i._id === dataUser._id) {
+      //       console.log("yes");
+      //       elementLike.classList.toggle("elements__like_active");
+      //     } else {
+      //       console.log("no");
+      //       elementLike.classList.toggle("elements__like_active");
+      //     }
+      //   });
+      // });
 
-        const changeAddLikeData = apiConfig.addLikeCard(likes);
-
-        api.addLikeCard(changeAddLikeData).then((data) => {
-          const likeCounter = eventTarget.querySelector(
-            ".elements__count_like"
-          );
-
-          likeCounter.textContent = likes;
-          // console.log(likeCounter);
-        });
-
-        elementLike.classList.toggle("elements__like_active");
-        console.log("+1");
-      } else {
+      if (elementLike.classList.contains("elements__like_active")) {
         api.removeLikeCard(this._data._id).then((data) => {
-          const likes = --this._data.likes.length;
-          const likeCounter = eventTarget.querySelector(
-            ".elements__count_like"
-          );
-
-          likeCounter.textContent = likes;
-          // console.log(likeCounter);
+          likeCounter.textContent = data.likes.length;
         });
 
         elementLike.classList.toggle("elements__like_active");
-        console.log("-1");
+      } else {
+        api.addLikeCard(this._data._id).then((data) => {
+          likeCounter.textContent = data.likes.length;
+        });
+
+        elementLike.classList.toggle("elements__like_active");
       }
     });
   }
@@ -73,10 +67,29 @@ export class Card {
     const cardElement = this._getTemplate().cloneNode(true);
     const imgElement = cardElement.querySelector(".elements__image");
     const likeElement = cardElement.querySelector(".elements__count_like");
+    const buttonLike = cardElement.querySelector(".elements__like");
 
     imgElement.src = this._img;
     imgElement.alt = this._text;
     likeElement.textContent = this._data.likes.length;
+
+    api.getUserData().then((dataUser) => {
+      this._data.likes.forEach((i) => {
+        if (i._id === dataUser._id) {
+          buttonLike.classList.toggle("elements__like_active");
+        }
+      });
+    });
+
+    // console.log(this._data.likes);
+
+    // api.getUserData().then((dataUser) => {
+    //   if (this._data.likes.indexOf(dataUser._id)) {
+    //     buttonLike.classList.toggle("elements__like_active");
+    //   } else {
+    //     console.log("no");
+    //   }
+    // });
 
     cardElement.querySelector(".elements__title").textContent = this._text;
 
