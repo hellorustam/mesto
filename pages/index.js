@@ -1,6 +1,7 @@
 import "./index.css";
 
-import { initialCards } from "../scripts/initial-cards.js";
+// import { initialCards } from "../scripts/initial-cards.js";
+
 import {
   validationConfig,
   editButtonNode,
@@ -24,6 +25,7 @@ import { UserInfo } from "../components/UserInfo.js";
 import { Section } from "../components/Section.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
 import { Api } from "../components/Api.js";
+import { apiConfig } from "../scripts/apiConfig.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
 const formProfile = new FormValidator(validationConfig, fromEdit);
@@ -43,79 +45,53 @@ const api = new Api({});
 //   // about: userData.about,
 // });
 
-// api.getUserData().then((data) => {
-//   // renderUserDataInContent(data);
-//   profileNameNode.textContent = data?.name;
-//   profileAboutNode.textContent = data?.about;
-//   return data;
-// });
-
 function renderUserDataInContent(data) {
-  profileNameNode.textContent = data.name;
-  profileAboutNode.textContent = data.about;
+  profileNameNode.textContent = data?.name;
+  profileAboutNode.textContent = data?.about;
   profileAvatar.src = "";
-  profileAvatar.style.backgroundImage = `url('${data.avatar}')`;
+  profileAvatar.style.backgroundImage = `url('${data?.avatar}')`;
 }
-
-const userData = {};
 
 api
   .getUserData()
   .then((data) => {
-    userData.name = data.name;
-    userData.about = data.about;
-    userData.avatar = data.avatar;
-    // const { name, about, avatar } = data;
     renderUserDataInContent(data);
+
+    // Вызов попапа редактирования профиля
+    editButtonNode.addEventListener("click", () => {
+      nameInput.value = data.name;
+      aboutInput.value = data.about;
+
+      profilePopup.openPopup();
+    });
   })
   .catch((err) =>
     console.log("Ошибка при получении данных о пользователе: " + err)
   );
 
-console.log(userData);
+const newInitialCardsArr = [];
 
-// const newInitialCards = [];
+const section = new Section(
+  {
+    items: newInitialCardsArr,
+    renderer: (item) => {
+      section.addItem(createCard(item));
+    },
+  },
+  cardsContainer
+);
 
-// api
-//   .getCards()
-//   .then((data) => {
-//     data.forEach((element) => {
-//       newInitialCards.push(element);
-//     });
-
-//     console.log(newInitialCards);
-//     console.log(newInitialCards[2]);
-//   })
-//   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
-// const newInitialCards = api
-//   .getCards()
-//   .then((data) => {
-//     // return Promise.resolve(data);
-//     return data;
-//   })
-//   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
-// console.log(newInitialCards);
-
-// async function newInitialCards() {
-//   return await api
-//     .getCards()
-//     .catch((err) => console.log("Ошибка при получении карточек: " + err));
-// }
-
-// newInitialCards().then(console.log(data));
+api
+  .getCards()
+  .then((data) => {
+    data.forEach((element) => {
+      newInitialCardsArr.push(element);
+    });
+    section.renderAll();
+  })
+  .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
 //----
-
-// const newUserData =
-// api
-//   .changeUserData()
-//   // .then((data) => console.log(data))
-//   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
-// console.log(newUserData);
-// console.log(newUserData.then((data) => data));
 
 function openPopup(dataCard) {
   popupWithImage.openPopup(dataCard);
@@ -125,22 +101,20 @@ const createCard = (data) => {
   return new Card(data, selectorsObj, openPopup).createCard();
 };
 
-const section = new Section(
-  {
-    items: initialCards,
-    // items: newInitialCards(),
-    renderer: (item) => {
-      section.addItem(createCard(item));
-    },
-  },
-  cardsContainer
-);
-
 const mestoPopup = new PopupWithForm({
   popup: popupAddNode,
   handleSubmit: (item) => {
-    section.addItem(createCard(item));
+    const newCardsData = {
+      name: item.name,
+      link: item.link,
+      likes: [],
+    };
 
+    api
+      .postCard(newCardsData)
+      .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
+    section.addItem(createCard(newCardsData));
     mestoPopup.closePopup();
   },
 });
@@ -150,6 +124,16 @@ const profilePopup = new PopupWithForm({
   handleSubmit: (data) => {
     userInfo.setUserInfo(data);
     userInfo.updateUserInfo();
+
+    const bodyUserData = {
+      name: data.name,
+      about: data.about,
+    };
+
+    api
+      .changeUserData(bodyUserData)
+      .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
     profilePopup.closePopup();
   },
 });
@@ -161,17 +145,17 @@ userInfo.setUserInfo({
   about: profileAboutNode.textContent,
 });
 
-// Вызов попапа редактирования профиля
-editButtonNode.addEventListener("click", () => {
-  // const getUserInfo = userInfo.getUserInfo();
+// // Вызов попапа редактирования профиля
+// editButtonNode.addEventListener("click", () => {
+//   const getUserInfo = userInfo.getUserInfo();
 
-  nameInput.value = userData.name;
-  aboutInput.value = userData.about;
-  // nameInput.value = getUserInfo.name;
-  // aboutInput.value = getUserInfo.about;
+//   // nameInput.value = userData.name;
+//   // aboutInput.value = userData.about;
+//   nameInput.value = getUserInfo.name;
+//   aboutInput.value = getUserInfo.about;
 
-  profilePopup.openPopup();
-});
+//   profilePopup.openPopup();
+// });
 
 // ----
 
@@ -179,8 +163,6 @@ editButtonNode.addEventListener("click", () => {
 addButtonNode.addEventListener("click", () => {
   mestoPopup.openPopup();
 });
-
-section.renderAll();
 
 mestoPopup.setEventListeners();
 profilePopup.setEventListeners();

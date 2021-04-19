@@ -10,6 +10,7 @@ const PREF_API = `${CONFIG_API.ADDRESS}/${CONFIG_API.GROUP_ID}`;
 const URLS = {
   USER: `${PREF_API}/users/me`,
   CARDS: `${PREF_API}/cards`,
+  LIKES: `${PREF_API}/cards/likes`,
 };
 
 const GET_USER_DATA_HEADERS = {
@@ -19,30 +20,72 @@ const GET_USER_DATA_HEADERS = {
   },
 };
 
-const CHANGE_USER_DATA_HEADERS = {
-  method: "PATCH",
-  headers: {
-    authorization: TOKEN,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: "Rustam",
-    about: "dez",
-    // name: this._name,
-    // about: this._about,
-  }),
+const CHANGE_USER_DATA_HEADERS = (data) => {
+  return {
+    method: "PATCH",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
 };
 
 const GET_CARDS_HEADERS = {
   headers: {
     authorization: TOKEN,
-    // "Content-Type": "application/json",
   },
 };
+
+const POST_CARD_HEADERS = (data) => {
+  return {
+    method: "POST",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+};
+
+const ADD_LIKE_CARD = (data) => {
+  return {
+    method: "POST",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+};
+
+const REMOVE_LIKE_CARD = (data) => {
+  return {
+    method: "PUT",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+};
+
+// const REMOVE_LIKE_CARD = () => {
+//   return {
+//     method: "DELETE",
+//     headers: {
+//       authorization: TOKEN,
+//       "Content-Type": "application/json",
+//     },
+//   };
+// };
 
 export const apiConfig = {
   urls: URLS,
   getUserDataHeaders: GET_USER_DATA_HEADERS,
   changeUserDataHeaders: CHANGE_USER_DATA_HEADERS,
   getCardsHeaders: GET_CARDS_HEADERS,
+  postCardHeaders: POST_CARD_HEADERS,
+  addLikeCard: ADD_LIKE_CARD,
+  removeLikeCard: REMOVE_LIKE_CARD,
 };

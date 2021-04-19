@@ -1,107 +1,63 @@
-import { apiConfig } from "../scripts/apiConfig";
-// console.log(apiConfig);
-// console.log(apiConfig.getUserDataHeaders);
+import { apiConfig } from "../scripts/apiConfig.js";
 
 export class Api {
-  // constructor({ address, token, groupID, name, about }) {
-  //   this._address = address;
-  //   this._token = token;
-  //   this._groupID = groupID;
-  //   // this._name = name;
-  //   // this._about = about;
-  // }
-
   getUserData() {
     return fetch(apiConfig.urls.USER, apiConfig.getUserDataHeaders).then(
       (response) => {
-        return response.json();
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(`Ошибка: ${response.status}`);
       }
     );
   }
 
-  // getUserData() {
-  //   return fetch(apiConfig.urls.USER, apiConfig.getUserDataHeaders).then(
-  //     (response) => {
-  //       if (response.ok) {
-  //         return response.json();
-  //       }
-  //       return Promise.reject(`Ошибка: ${response.status}`);
-  //     }
-  //   );
-  //   // .then((data) => {
-  //   //   return data;
-  //   // });
-  // }
+  changeUserData(data) {
+    return fetch(apiConfig.urls.USER, apiConfig.changeUserDataHeaders(data));
+  }
 
-  // getUserData() {
-  //   return fetch(`${this._address}/${this._groupID}/users/me`, {
-  //     headers: {
-  //       authorization: this._token,
-  //       "Content-Type": "application/json",
-  //     },
-  //   }).then((response) => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     }
-  //     return Promise.reject(`Ошибка: ${response.status}`);
-  //   });
-  //   // .then((data) => {
-  //   //   return data;
-  //   // });
-  // }
+  getCards() {
+    return fetch(apiConfig.urls.CARDS, apiConfig.getCardsHeaders).then(
+      (response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(`Ошибка: ${response.status}`);
+      }
+    );
+  }
 
-  // changeUserData() {
-  //   return fetch(`${this._address}/${this._groupID}/users/me`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       authorization: this._token,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       name: "Rustam",
-  //       about: "dez",
-  //       // name: this._name,
-  //       // about: this._about,
-  //     }),
-  //   }).then((response) => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     }
-  //     return Promise.reject(`Ошибка: ${response.status}`);
-  //   });
-  // }
+  postCard(data) {
+    return fetch(apiConfig.urls.CARDS, apiConfig.postCardHeaders(data)).then(
+      (response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(`Ошибка: ${response.status}`);
+      }
+    );
+  }
 
-  // async getCards() {
-  //   return new Promise((resolve) => {
-  //     fetch(`${this._address}/${this._groupID}/cards`, {
-  //       headers: {
-  //         authorization: this._token,
-  //         // "Content-Type": "application/json",
-  //       },
-  //     })
-  //       .then((response) => {
-  //         if (response.ok) {
-  //           return response.json();
-  //         }
-  //         return Promise.reject(`Ошибка: ${response.status}`);
-  //       })
-  //       .then((data) => resolve(data));
-  //   });
-  // }
+  addLikeCard(id) {
+    return fetch(`${apiConfig.urls.LIKES}/${id}`, apiConfig.addLikeCard()).then(
+      (response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(`Ошибка: ${response.status}`);
+      }
+    );
+  }
 
-  // getCards() {
-  //   return fetch(`${this._address}/${this._groupID}/cards`, {
-  //     headers: {
-  //       authorization: this._token,
-  //       "Content-Type": "application/json",
-  //     },
-  //   }).then((response) => {
-  //     // const data = response;
-  //     // console.log(data);
-  //     if (response.ok) {
-  //       return Promise.resolve(response.json());
-  //     }
-  //     return Promise.reject(`Ошибка: ${response.status}`);
-  //   });
-  // }
+  removeLikeCard(id) {
+    return fetch(
+      `${apiConfig.urls.LIKES}/${id}`,
+      apiConfig.removeLikeCard()
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.status}`);
+    });
+  }
 }
