@@ -175,6 +175,26 @@
           </form>
         </div>
       </div>
+
+      <div class="popup popup-del-card">
+        <div class="popup__container">
+          <button
+            type="button"
+            aria-label="Закрыть"
+            class="popup__close"
+          ></button>
+          <form
+            action="#"
+            name="form-popup-del-card"
+            class="popup__form popup__del-card"
+            novalidate
+          >
+            <h3 class="popup__title">Вы уверены?</h3>
+            <button type="submit" class="popup__button">Да</button>
+          </form>
+        </div>
+      </div>
+
       <div class="popup popup-img">
         <div class="popup__img-container">
           <button
@@ -204,7 +224,7 @@
           type="button"
           class="elements__like"
         >
-          <span class="elements__count_like">3</span>
+          <span class="elements__count_like"></span>
         </button>
       </div>
     </template>

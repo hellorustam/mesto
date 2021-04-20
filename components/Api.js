@@ -60,4 +60,15 @@ export class Api {
       return Promise.reject(`Ошибка: ${response.status}`);
     });
   }
+
+  deleteCard(id) {
+    return fetch(`${apiConfig.urls.CARDS}/${id}`, apiConfig.deleteCard()).then(
+      (response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(`Ошибка: ${response.status}`);
+      }
+    );
+  }
 }

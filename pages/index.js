@@ -12,6 +12,7 @@ import {
   popupProfileNode,
   nameInput,
   aboutInput,
+  popupDelCardNode,
   popupAddNode,
   popupImg,
   cardsContainer,
@@ -20,10 +21,12 @@ import {
 
 import { Card } from "../components/Card.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
+import { PopupWithImage } from "../components/PopupWithImage.js";
+import { PopupDelCard } from "../components/PopupDelCard.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { Section } from "../components/Section.js";
-import { PopupWithImage } from "../components/PopupWithImage.js";
+
 import { Api } from "../components/Api.js";
 import { apiConfig } from "../scripts/apiConfig.js";
 
@@ -108,14 +111,31 @@ const mestoPopup = new PopupWithForm({
       name: item.name,
       link: item.link,
       likes: [],
+      owner: {
+        _id: "746c6052f7a7f26f04c96054",
+      },
+      // owner: {
+      //   _id: api
+      //     .getUserData()
+      //     .then((data) => {
+      //       return data._id;
+      //     })
+      //     .catch((err) => console.log("Ошибка при получении карточек: " + err)),
+      // },
     };
 
+    // console.log(newCardsData.owner._id);
     api
       .postCard(newCardsData)
+      .then((data) => {
+        location.reload();
+        return data;
+      })
       .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
-    section.addItem(createCard(newCardsData));
+    section.addItemPrepend(createCard(newCardsData));
     mestoPopup.closePopup();
+    // location.reload();
   },
 });
 
@@ -137,6 +157,24 @@ const profilePopup = new PopupWithForm({
     profilePopup.closePopup();
   },
 });
+
+// const delCardPopup = new PopupDelCard({
+//   popup: popupDelCardNode,
+//   handleSubmit: (data) => {
+//     console.log(data);
+
+//     // api
+//     //   .deleteCard(this._data._id)
+//     //   .then((data) => {
+//     //     console.log(data);
+//     //   })
+//     //   .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
+//     delCardPopup.closePopup();
+//   },
+// });
+
+// delCardPopup.setEventListener();
 
 const userInfo = new UserInfo(profileNameNode, profileAboutNode);
 

@@ -48,25 +48,36 @@ const POST_CARD_HEADERS = (data) => {
   };
 };
 
-const ADD_LIKE_CARD = (data) => {
-  return {
-    method: "POST",
-    headers: {
-      authorization: TOKEN,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  };
-};
-
-const REMOVE_LIKE_CARD = (data) => {
+const ADD_LIKE_CARD = () => {
   return {
     method: "PUT",
     headers: {
       authorization: TOKEN,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    // body: JSON.stringify(data),
+  };
+};
+
+const REMOVE_LIKE_CARD = () => {
+  return {
+    method: "DELETE",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    // body: JSON.stringify(data),
+  };
+};
+
+const DELETE_CARD = () => {
+  return {
+    method: "DELETE",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    // body: JSON.stringify(data),
   };
 };
 
@@ -88,4 +99,5 @@ export const apiConfig = {
   postCardHeaders: POST_CARD_HEADERS,
   addLikeCard: ADD_LIKE_CARD,
   removeLikeCard: REMOVE_LIKE_CARD,
+  deleteCard: DELETE_CARD,
 };

@@ -19,47 +19,57 @@ export class Card {
     const elementLike = node.querySelector(".elements__like");
 
     elementLike.addEventListener("click", (evt) => {
-      const eventTarget = evt.target;
-      const likeButt = eventTarget.querySelector(".elements__like");
+      // const eventTarget = evt.target;
+      // const likeActive = eventTarget.querySelector(".elements__like_active");
+      const likeCounter = elementLike.querySelector(".elements__count_like");
 
-      if (likeButt === null) {
-        const likes = {
-          likes: ++this._data.likes.length,
-        };
+      // api.getUserData().then((dataUser) => {
+      //   this._data.likes.forEach((i) => {
+      //     if (i._id === dataUser._id) {
+      //       console.log("yes");
+      //       elementLike.classList.toggle("elements__like_active");
+      //     } else {
+      //       console.log("no");
+      //       elementLike.classList.toggle("elements__like_active");
+      //     }
+      //   });
+      // });
 
-        const changeAddLikeData = apiConfig.addLikeCard(likes);
-
-        api.addLikeCard(changeAddLikeData).then((data) => {
-          const likeCounter = eventTarget.querySelector(
-            ".elements__count_like"
-          );
-
-          likeCounter.textContent = likes;
-          // console.log(likeCounter);
-        });
-
-        elementLike.classList.toggle("elements__like_active");
-        console.log("+1");
-      } else {
+      if (elementLike.classList.contains("elements__like_active")) {
         api.removeLikeCard(this._data._id).then((data) => {
-          const likes = --this._data.likes.length;
-          const likeCounter = eventTarget.querySelector(
-            ".elements__count_like"
-          );
-
-          likeCounter.textContent = likes;
-          // console.log(likeCounter);
+          likeCounter.textContent = data.likes.length;
         });
 
         elementLike.classList.toggle("elements__like_active");
-        console.log("-1");
+      } else {
+        api.addLikeCard(this._data._id).then((data) => {
+          likeCounter.textContent = data.likes.length;
+        });
+
+        elementLike.classList.toggle("elements__like_active");
       }
     });
   }
 
   _removeCard(node) {
     node.querySelector(".elements__remove").addEventListener("click", (evt) => {
-      evt.currentTarget.closest(".elements__element").remove();
+      const delPopup = document.querySelector(this._config.popupDelCard);
+      const delPopupForm = delPopup.querySelector(".popup__form");
+
+      delPopupForm.addEventListener("submit", () => {
+        return api.deleteCard(this._data._id).then((data) => {
+          console.log(data);
+          delPopup.classList.toggle("popup_visible");
+          location.reload();
+        });
+      });
+
+      // api.deleteCard(this._data._id).then((data) => {
+      //   console.log(data);
+      // });
+
+      delPopup.classList.toggle("popup_visible");
+      // evt.currentTarget.closest(".elements__element").remove();
     });
   }
 
@@ -73,10 +83,42 @@ export class Card {
     const cardElement = this._getTemplate().cloneNode(true);
     const imgElement = cardElement.querySelector(".elements__image");
     const likeElement = cardElement.querySelector(".elements__count_like");
+    const buttonLike = cardElement.querySelector(".elements__like");
+    const buttonRemove = cardElement.querySelector(".elements__remove");
 
     imgElement.src = this._img;
     imgElement.alt = this._text;
     likeElement.textContent = this._data.likes.length;
+
+    api.getUserData().then((dataUser) => {
+      this._data.likes.forEach((i) => {
+        if (i._id.includes(dataUser._id)) {
+          // if (i._id === dataUser._id) {
+          buttonLike.classList.toggle("elements__like_active");
+        }
+      });
+
+      // console.log(this._data.owner._id);
+      if (this._data.owner._id === dataUser._id) {
+        buttonRemove.style.display = "block";
+      }
+    });
+
+    // api.getUserData().then((dataUser) => {
+    //   if (this._data.likes.indexOf(dataUser._id)) {
+    //     buttonLike.classList.toggle("elements__like_active");
+    //   } else {
+    //     console.log("no");
+    //   }
+    // });
+
+    // buttonRemove.addEventListener("click", () => {
+    //   const delPopup = document.querySelector(this._config.popupDelCard);
+    //   // console.log(delPopup);
+
+    //   delPopup.classList.toggle("popup_visible");
+    //   // console.log(buttonRemove);
+    // });
 
     cardElement.querySelector(".elements__title").textContent = this._text;
 
