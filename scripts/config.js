@@ -24,6 +24,7 @@ const selectorsObj = {
   aboutInput: ".popup__about",
   formElement: ".popup__profile-form",
 
+  popupDelCard: ".popup-del-card",
   popupAddNode: ".popup-add",
   closeButtonAddNode: ".popup__close",
   mestoTitleInput: ".popup__mesto-title",
@@ -52,6 +53,7 @@ const nameInput = qSel(selectorsObj.nameInput);
 const aboutInput = qSel(selectorsObj.aboutInput);
 const formElement = qSel(selectorsObj.formElement);
 
+const popupDelCardNode = qSel(selectorsObj.popupDelCard);
 const popupAddNode = qSel(selectorsObj.popupAddNode);
 const closeButtonAddNode = popupAddNode.querySelector(
   selectorsObj.closeButtonNode
@@ -79,6 +81,7 @@ export {
   nameInput,
   aboutInput,
   formElement,
+  popupDelCardNode,
   popupAddNode,
   closeButtonAddNode,
   mestoTitleInput,

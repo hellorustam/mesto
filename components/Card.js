@@ -53,7 +53,23 @@ export class Card {
 
   _removeCard(node) {
     node.querySelector(".elements__remove").addEventListener("click", (evt) => {
-      evt.currentTarget.closest(".elements__element").remove();
+      const delPopup = document.querySelector(this._config.popupDelCard);
+      const delPopupForm = delPopup.querySelector(".popup__form");
+
+      delPopupForm.addEventListener("submit", () => {
+        return api.deleteCard(this._data._id).then((data) => {
+          console.log(data);
+          delPopup.classList.toggle("popup_visible");
+          location.reload();
+        });
+      });
+
+      // api.deleteCard(this._data._id).then((data) => {
+      //   console.log(data);
+      // });
+
+      delPopup.classList.toggle("popup_visible");
+      // evt.currentTarget.closest(".elements__element").remove();
     });
   }
 
@@ -68,6 +84,7 @@ export class Card {
     const imgElement = cardElement.querySelector(".elements__image");
     const likeElement = cardElement.querySelector(".elements__count_like");
     const buttonLike = cardElement.querySelector(".elements__like");
+    const buttonRemove = cardElement.querySelector(".elements__remove");
 
     imgElement.src = this._img;
     imgElement.alt = this._text;
@@ -75,13 +92,17 @@ export class Card {
 
     api.getUserData().then((dataUser) => {
       this._data.likes.forEach((i) => {
-        if (i._id === dataUser._id) {
+        if (i._id.includes(dataUser._id)) {
+          // if (i._id === dataUser._id) {
           buttonLike.classList.toggle("elements__like_active");
         }
       });
-    });
 
-    // console.log(this._data.likes);
+      // console.log(this._data.owner._id);
+      if (this._data.owner._id === dataUser._id) {
+        buttonRemove.style.display = "block";
+      }
+    });
 
     // api.getUserData().then((dataUser) => {
     //   if (this._data.likes.indexOf(dataUser._id)) {
@@ -89,6 +110,14 @@ export class Card {
     //   } else {
     //     console.log("no");
     //   }
+    // });
+
+    // buttonRemove.addEventListener("click", () => {
+    //   const delPopup = document.querySelector(this._config.popupDelCard);
+    //   // console.log(delPopup);
+
+    //   delPopup.classList.toggle("popup_visible");
+    //   // console.log(buttonRemove);
     // });
 
     cardElement.querySelector(".elements__title").textContent = this._text;

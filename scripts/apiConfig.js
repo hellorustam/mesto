@@ -70,6 +70,17 @@ const REMOVE_LIKE_CARD = () => {
   };
 };
 
+const DELETE_CARD = () => {
+  return {
+    method: "DELETE",
+    headers: {
+      authorization: TOKEN,
+      "Content-Type": "application/json",
+    },
+    // body: JSON.stringify(data),
+  };
+};
+
 // const REMOVE_LIKE_CARD = () => {
 //   return {
 //     method: "DELETE",
@@ -88,4 +99,5 @@ export const apiConfig = {
   postCardHeaders: POST_CARD_HEADERS,
   addLikeCard: ADD_LIKE_CARD,
   removeLikeCard: REMOVE_LIKE_CARD,
+  deleteCard: DELETE_CARD,
 };
