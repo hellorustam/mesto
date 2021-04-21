@@ -9,6 +9,7 @@ const PREF_API = `${CONFIG_API.ADDRESS}/${CONFIG_API.GROUP_ID}`;
 
 const URLS = {
   USER: `${PREF_API}/users/me`,
+  AVATAR: `${PREF_API}/users/me/avatar`,
   CARDS: `${PREF_API}/cards`,
   LIKES: `${PREF_API}/cards/likes`,
 };

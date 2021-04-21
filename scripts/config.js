@@ -26,6 +26,9 @@ const selectorsObj = {
 
   popupDelCard: ".popup-del-card",
   popupAddNode: ".popup-add",
+  popupAvatarNode: ".popup-avatar",
+  popupAvatarForm: ".popup__avatar-form",
+  profileEditAvatar: ".profile__edit-avatar",
   closeButtonAddNode: ".popup__close",
   mestoTitleInput: ".popup__mesto-title",
   mestoLinkInput: ".popup__mesto-link",
@@ -55,6 +58,9 @@ const formElement = qSel(selectorsObj.formElement);
 
 const popupDelCardNode = qSel(selectorsObj.popupDelCard);
 const popupAddNode = qSel(selectorsObj.popupAddNode);
+const popupAvatarNode = qSel(selectorsObj.popupAvatarNode);
+const popupAvatarForm = qSel(selectorsObj.popupAvatarForm);
+const profileEditAvatar = qSel(selectorsObj.profileEditAvatar);
 const closeButtonAddNode = popupAddNode.querySelector(
   selectorsObj.closeButtonNode
 );
@@ -77,6 +83,9 @@ export {
   profileAvatar,
   addButtonNode,
   popupProfileNode,
+  popupAvatarNode,
+  popupAvatarForm,
+  profileEditAvatar,
   closeButtonNode,
   nameInput,
   aboutInput,

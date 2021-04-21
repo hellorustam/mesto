@@ -10,6 +10,9 @@ import {
   profileAvatar,
   addButtonNode,
   popupProfileNode,
+  popupAvatarNode,
+  popupAvatarForm,
+  profileEditAvatar,
   nameInput,
   aboutInput,
   popupDelCardNode,
@@ -36,6 +39,8 @@ const formProfile = new FormValidator(validationConfig, fromEdit);
 const formAdd = document.querySelector(validationConfig.popUpMestoForm);
 const formMesto = new FormValidator(validationConfig, formAdd);
 
+const formAvatar = new FormValidator(validationConfig, popupAvatarForm);
+
 const popupWithImage = new PopupWithImage(popupImg);
 
 const api = new Api({});
@@ -52,7 +57,8 @@ function renderUserDataInContent(data) {
   profileNameNode.textContent = data?.name;
   profileAboutNode.textContent = data?.about;
   profileAvatar.src = "";
-  profileAvatar.style.backgroundImage = `url('${data?.avatar}')`;
+  profileAvatar.src = data?.avatar;
+  // profileAvatar.style.backgroundImage = `url('${data?.avatar}')`;
 }
 
 api
@@ -66,6 +72,11 @@ api
       aboutInput.value = data.about;
 
       profilePopup.openPopup();
+    });
+
+    // Вызов попапа смены аватара
+    profileEditAvatar.addEventListener("click", () => {
+      avatarPopup.openPopup();
     });
   })
   .catch((err) =>
@@ -114,17 +125,8 @@ const mestoPopup = new PopupWithForm({
       owner: {
         _id: "746c6052f7a7f26f04c96054",
       },
-      // owner: {
-      //   _id: api
-      //     .getUserData()
-      //     .then((data) => {
-      //       return data._id;
-      //     })
-      //     .catch((err) => console.log("Ошибка при получении карточек: " + err)),
-      // },
     };
 
-    // console.log(newCardsData.owner._id);
     api
       .postCard(newCardsData)
       .then((data) => {
@@ -155,6 +157,23 @@ const profilePopup = new PopupWithForm({
       .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
     profilePopup.closePopup();
+  },
+});
+
+const avatarPopup = new PopupWithForm({
+  popup: popupAvatarNode,
+  handleSubmit: (data) => {
+    const newAvatarData = {
+      avatar: data.link,
+    };
+
+    profileAvatar.src = data?.link;
+
+    api
+      .changeAvatarData(newAvatarData)
+      .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
+    avatarPopup.closePopup();
   },
 });
 
@@ -204,7 +223,9 @@ addButtonNode.addEventListener("click", () => {
 
 mestoPopup.setEventListeners();
 profilePopup.setEventListeners();
+avatarPopup.setEventListeners();
 popupWithImage.setEventListeners();
 
 formMesto.enableValidation();
 formProfile.enableValidation();
+formAvatar.enableValidation();
