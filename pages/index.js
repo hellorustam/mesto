@@ -53,6 +53,27 @@ const api = new Api({});
 //   // about: userData.about,
 // });
 
+// const asd =
+//   popupAddNode.querySelector(validationConfig.submitButtonSelector)
+//     .textContent + "...";
+
+// console.log(asd);
+
+function renderLoading(isLoading, node) {
+  if (isLoading) {
+    node.querySelector(validationConfig.submitButtonSelector).textContent +
+      "...";
+
+    console.log(
+      node.querySelector(validationConfig.submitButtonSelector).textContent +
+        "..."
+    );
+    console.log("loading...");
+  } else {
+    console.log("s-t-o-p");
+  }
+}
+
 function renderUserDataInContent(data) {
   profileNameNode.textContent = data?.name;
   profileAboutNode.textContent = data?.about;
@@ -129,11 +150,17 @@ const mestoPopup = new PopupWithForm({
 
     api
       .postCard(newCardsData)
-      .then((data) => {
+      .then(() => {
+        renderLoading(true, popupAddNode);
+      })
+      .then(() => {
         location.reload();
         return data;
       })
-      .catch((err) => console.log("Ошибка при получении карточек: " + err));
+      .catch((err) => console.log("Ошибка при получении карточек: " + err))
+      .finally(() => {
+        renderLoading(false);
+      });
 
     section.addItemPrepend(createCard(newCardsData));
     mestoPopup.closePopup();
@@ -154,7 +181,17 @@ const profilePopup = new PopupWithForm({
 
     api
       .changeUserData(bodyUserData)
-      .catch((err) => console.log("Ошибка при получении карточек: " + err));
+      .then(() => {
+        // console.log(
+        //   popupProfileNode.querySelector(validationConfig.submitButtonSelector)
+        //     .textContent + "..."
+        // );
+        renderLoading(true, popupProfileNode);
+      })
+      .catch((err) => console.log("Ошибка при получении карточек: " + err))
+      .finally(() => {
+        renderLoading(false);
+      });
 
     profilePopup.closePopup();
   },
@@ -171,7 +208,13 @@ const avatarPopup = new PopupWithForm({
 
     api
       .changeAvatarData(newAvatarData)
-      .catch((err) => console.log("Ошибка при получении карточек: " + err));
+      .then(() => {
+        renderLoading(true, popupAvatarNode);
+      })
+      .catch((err) => console.log("Ошибка при получении карточек: " + err))
+      .finally(() => {
+        renderLoading(false);
+      });
 
     avatarPopup.closePopup();
   },
