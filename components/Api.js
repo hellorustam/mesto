@@ -16,6 +16,10 @@ export class Api {
     return fetch(apiConfig.urls.USER, apiConfig.changeUserDataHeaders(data));
   }
 
+  changeAvatarData(data) {
+    return fetch(apiConfig.urls.AVATAR, apiConfig.changeUserDataHeaders(data));
+  }
+
   getCards() {
     return fetch(apiConfig.urls.CARDS, apiConfig.getCardsHeaders).then(
       (response) => {
