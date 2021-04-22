@@ -53,24 +53,28 @@ const api = new Api({});
 //   // about: userData.about,
 // });
 
-// const asd =
-//   popupAddNode.querySelector(validationConfig.submitButtonSelector)
-//     .textContent + "...";
-
-// console.log(asd);
+// console.log(loader);
 
 function renderLoading(isLoading, node) {
-  if (isLoading) {
-    node.querySelector(validationConfig.submitButtonSelector).textContent +
-      "...";
+  const loader = node.querySelector(validationConfig.loaderNode);
+  const loaderData = {
+    loading: "...",
+    loaded: "",
+  };
 
-    console.log(
-      node.querySelector(validationConfig.submitButtonSelector).textContent +
-        "..."
-    );
-    console.log("loading...");
+  if (isLoading) {
+    loader.textContent = loaderData.loading;
+
+    // node.querySelector(validationConfig.loaderNode).textContent += "...";
+    // console.log(
+    //   (node.querySelector(validationConfig.submitButtonSelector).textContent +=
+    //     "...")
+    // );
+    // console.log("loading...");
   } else {
-    console.log("s-t-o-p");
+    loader.textContent = loaderData.loaded;
+    // node.querySelector(validationConfig.loaderNode).textContent = "";
+    // console.log("s-t-o-p");
   }
 }
 
@@ -148,18 +152,20 @@ const mestoPopup = new PopupWithForm({
       },
     };
 
+    renderLoading(true, popupAddNode);
+
     api
       .postCard(newCardsData)
-      .then(() => {
-        renderLoading(true, popupAddNode);
-      })
+      // .then(() => {
+
+      // })
       .then(() => {
         location.reload();
         return data;
       })
       .catch((err) => console.log("Ошибка при получении карточек: " + err))
       .finally(() => {
-        renderLoading(false);
+        renderLoading(false, popupAddNode);
       });
 
     section.addItemPrepend(createCard(newCardsData));
@@ -179,18 +185,20 @@ const profilePopup = new PopupWithForm({
       about: data.about,
     };
 
+    renderLoading(true, popupProfileNode);
+
     api
       .changeUserData(bodyUserData)
-      .then(() => {
-        // console.log(
-        //   popupProfileNode.querySelector(validationConfig.submitButtonSelector)
-        //     .textContent + "..."
-        // );
-        renderLoading(true, popupProfileNode);
-      })
+      // .then(() => {
+      //   // console.log(
+      //   //   popupProfileNode.querySelector(validationConfig.submitButtonSelector)
+      //   //     .textContent + "..."
+      //   // );
+
+      // })
       .catch((err) => console.log("Ошибка при получении карточек: " + err))
       .finally(() => {
-        renderLoading(false);
+        renderLoading(false, popupProfileNode);
       });
 
     profilePopup.closePopup();
@@ -206,14 +214,16 @@ const avatarPopup = new PopupWithForm({
 
     profileAvatar.src = data?.link;
 
+    renderLoading(true, popupAvatarNode);
+
     api
       .changeAvatarData(newAvatarData)
-      .then(() => {
-        renderLoading(true, popupAvatarNode);
-      })
+      // .then(() => {
+
+      // })
       .catch((err) => console.log("Ошибка при получении карточек: " + err))
       .finally(() => {
-        renderLoading(false);
+        renderLoading(false, popupAvatarNode);
       });
 
     avatarPopup.closePopup();
