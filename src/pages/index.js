@@ -48,6 +48,17 @@ const api = new Api({
 
 // ----
 
+function renderLoading(isLoading, node) {
+  const loader = node.querySelector(validationConfig.loaderNode);
+  if (isLoading) {
+    loader.textContent = "...";
+  } else {
+    loader.textContent = "";
+  }
+}
+
+// ----
+
 api
   .getUserData()
   .then((data) => {
@@ -55,7 +66,6 @@ api
     profileAboutNode.textContent = data?.about;
     profileAvatar.src = data?.avatar;
 
-    // Вызов попапа смены аватара
     profileEditAvatar.addEventListener("click", () => {
       avatarPopup.openPopup();
     });
@@ -83,7 +93,7 @@ const changeUserData = (data) => {
     .changeUserData(data)
     .catch((err) => console.log("Ошибка при получении карточек: " + err))
     .finally(() => {
-      // renderLoading(false, popupProfileNode);
+      renderLoading(false, popupProfileNode);
     });
 };
 
@@ -92,6 +102,8 @@ const profilePopup = new PopupWithForm({
   handleSubmit: (data) => {
     userInfo.setUserInfo(data);
     userInfo.updateUserInfo();
+
+    renderLoading(true, popupProfileNode);
 
     const bodyUserData = {
       name: data?.name,
@@ -108,9 +120,9 @@ const profilePopup = new PopupWithForm({
 const changeAvatarData = (data) => {
   return api
     .changeAvatarData(data)
-    .catch((err) => console.log("Ошибка при получении карточек: " + err))
+    .catch((err) => console.log("Ошибка при получении аватара: " + err))
     .finally(() => {
-      // renderLoading(false, popupAvatarNode);
+      renderLoading(false, popupAvatarNode);
     });
 };
 
@@ -120,16 +132,23 @@ const avatarPopup = new PopupWithForm({
     const newAvatarData = {
       avatar: data.link,
     };
+    renderLoading(true, popupAvatarNode);
     profileAvatar.src = data?.link;
-
-    // renderLoading(true, popupAvatarNode);
-
     changeAvatarData(newAvatarData);
     avatarPopup.closePopup();
   },
 });
 
-// ----
+// -----------
+
+api
+  .getCards()
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
+// -----------
 
 function openPopup(dataCard) {
   popupWithImage.openPopup(dataCard);

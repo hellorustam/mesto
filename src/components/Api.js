@@ -43,5 +43,20 @@ export class Api {
     });
   }
 
-  // ----
+  // ---------
+
+  getCards() {
+    return fetch(`${this._address}/${this._groupID}/cards`, {
+      headers: {
+        authorization: this._token,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.status}`);
+    });
+  }
+
+  // ---------
 }
