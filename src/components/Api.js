@@ -5,6 +5,8 @@ export class Api {
     this._groupID = groupID;
   }
 
+  // ----
+
   getUserData() {
     return fetch(`${this._address}/${this._groupID}/users/me`, {
       headers: {
@@ -18,4 +20,28 @@ export class Api {
       return Promise.reject(`Ошибка: ${response.status}`);
     });
   }
+
+  changeUserData(data) {
+    return fetch(`${this._address}/${this._groupID}/users/me`, {
+      method: "PATCH",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  changeAvatarData(data) {
+    return fetch(`${this._address}/${this._groupID}/users/me/avatar`, {
+      method: "PATCH",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  // ----
 }
