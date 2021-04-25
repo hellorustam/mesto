@@ -1,8 +1,7 @@
 import "./index.css";
 
-// import { initialCards } from "../scripts/initial-cards.js";
-
 import {
+  apiConfig,
   validationConfig,
   editButtonNode,
   profileNameNode,
@@ -46,11 +45,7 @@ const popupWithImage = new PopupWithImage(popupImg);
 
 const userInfo = new UserInfo(profileNameNode, profileAboutNode);
 
-const api = new Api({
-  address: "https://mesto.nomoreparties.co/v1",
-  token: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
-  groupID: "cohort-22",
-});
+const api = new Api(apiConfig.address, apiConfig.token, apiConfig.groupID);
 
 // ----
 
@@ -147,10 +142,26 @@ const avatarPopup = new PopupWithForm({
 
 // -----------
 
+const createCard = (data) => {
+  return new Card(data, selectorsObj, openPopup).createCard(apiConfig.userId);
+};
+
+const section = (data) => {
+  return new Section(
+    {
+      items: data,
+      renderer: (item) => {
+        section(data).addItem(createCard(item));
+      },
+    },
+    cardsContainer
+  );
+};
+
 api
   .getCards()
   .then((data) => {
-    console.log(data);
+    section(data).renderAll();
   })
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
@@ -160,103 +171,34 @@ function openPopup(dataCard) {
   popupWithImage.openPopup(dataCard);
 }
 
-function renderUserDataInContent(data) {
-  profileNameNode.textContent = data?.name;
-  profileAboutNode.textContent = data?.about;
-  profileAvatar.src = "";
-  profileAvatar.src = data?.avatar;
-  // profileAvatar.style.backgroundImage = `url('${data?.avatar}')`;
-}
-
-api
-  .getUserData()
-  .then((data) => {
-    renderUserDataInContent(data);
-
-    // Вызов попапа редактирования профиля
-    editButtonNode.addEventListener("click", () => {
-      nameInput.value = data.name;
-      aboutInput.value = data.about;
-
-      profilePopup.openPopup();
-    });
-
-    // Вызов попапа смены аватара
-    profileEditAvatar.addEventListener("click", () => {
-      avatarPopup.openPopup();
-    });
-  })
-  .catch((err) =>
-    console.log("Ошибка при получении данных о пользователе: " + err)
-  );
-
-const newInitialCardsArr = [];
-
-const section = new Section(
-  {
-    items: newInitialCardsArr,
-    renderer: (item) => {
-      section.addItem(createCard(item));
-    },
-  },
-  cardsContainer
-);
-
-api
-  .getCards()
-  .then((data) => {
-    data.forEach((element) => {
-      newInitialCardsArr.push(element);
-    });
-    section.renderAll();
-  })
-  .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
-//----
-
-function openPopup(dataCard) {
-  popupWithImage.openPopup(dataCard);
-}
-
-const createCard = (data) => {
-  return new Card(data, selectorsObj, openPopup).createCard();
-};
-
 const mestoPopup = new PopupWithForm({
   popup: popupAddNode,
   handleSubmit: (item) => {
+    renderLoading(true, popupAddNode);
+
     const newCardsData = {
       name: item.name,
       link: item.link,
       likes: [],
-      owner: {
-        _id: "746c6052f7a7f26f04c96054",
-      },
+      // owner: {
+      //   _id: apiConfig.userId,
+      // },
     };
 
-    renderLoading(true, popupAddNode);
+    console.log(newCardsData.likes.length);
 
     api
       .postCard(newCardsData)
-      // .then(() => {
-
-      // })
-      .then(() => {
-        location.reload();
-        return data;
-      })
       .catch((err) => console.log("Ошибка при получении карточек: " + err))
       .finally(() => {
         renderLoading(false, popupAddNode);
       });
 
-    section.addItemPrepend(createCard(newCardsData));
+    section().addItemPrepend(createCard(newCardsData));
     mestoPopup.closePopup();
     // location.reload();
   },
 });
-
-// ----
 
 // ----
 

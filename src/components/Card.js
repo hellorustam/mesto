@@ -79,48 +79,28 @@ export class Card {
     });
   }
 
-  createCard() {
+  createCard(userId) {
     const cardElement = this._getTemplate().cloneNode(true);
     const imgElement = cardElement.querySelector(".elements__image");
+    const titleCard = cardElement.querySelector(".elements__title");
     const likeElement = cardElement.querySelector(".elements__count_like");
     const buttonLike = cardElement.querySelector(".elements__like");
     const buttonRemove = cardElement.querySelector(".elements__remove");
 
+    titleCard.textContent = this._text;
     imgElement.src = this._img;
     imgElement.alt = this._text;
     likeElement.textContent = this._data.likes.length;
 
-    api.getUserData().then((dataUser) => {
-      this._data.likes.forEach((i) => {
-        if (i._id.includes(dataUser._id)) {
-          // if (i._id === dataUser._id) {
-          buttonLike.classList.toggle("elements__like_active");
-        }
-      });
-
-      // console.log(this._data.owner._id);
-      if (this._data.owner._id === dataUser._id) {
-        buttonRemove.style.display = "block";
+    this._data.likes.forEach((i) => {
+      if (i._id.includes(userId)) {
+        buttonLike.classList.toggle("elements__like_active");
       }
     });
 
-    // api.getUserData().then((dataUser) => {
-    //   if (this._data.likes.indexOf(dataUser._id)) {
-    //     buttonLike.classList.toggle("elements__like_active");
-    //   } else {
-    //     console.log("no");
-    //   }
-    // });
-
-    // buttonRemove.addEventListener("click", () => {
-    //   const delPopup = document.querySelector(this._config.popupDelCard);
-    //   // console.log(delPopup);
-
-    //   delPopup.classList.toggle("popup_visible");
-    //   // console.log(buttonRemove);
-    // });
-
-    cardElement.querySelector(".elements__title").textContent = this._text;
+    if (this._data.owner._id === userId) {
+      buttonRemove.style.display = "block";
+    }
 
     this._likeCard(cardElement);
     this._removeCard(cardElement);
