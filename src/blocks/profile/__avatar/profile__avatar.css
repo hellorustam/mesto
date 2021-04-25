@@ -10,10 +10,6 @@
   overflow: hidden;
 }
 
-/* .profile__avatar:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-} */
-
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .profile__avatar {
     margin-left: 19px;

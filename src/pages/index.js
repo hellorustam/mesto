@@ -29,9 +29,8 @@ import { PopupDelCard } from "../components/PopupDelCard.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { Section } from "../components/Section.js";
-
+import { PopupWithImage } from "../components/PopupWithImage.js";
 import { Api } from "../components/Api.js";
-import { apiConfig } from "../scripts/apiConfig.js";
 
 const fromEdit = document.querySelector(validationConfig.popUpProfileForm);
 const formProfile = new FormValidator(validationConfig, fromEdit);
@@ -43,39 +42,41 @@ const formAvatar = new FormValidator(validationConfig, popupAvatarForm);
 
 const popupWithImage = new PopupWithImage(popupImg);
 
-const api = new Api({});
+const api = new Api({
+  address: "https://mesto.nomoreparties.co/v1",
+  token: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
+  groupID: "cohort-22",
+});
 
-// const api = new Api({
-//   address: "https://mesto.nomoreparties.co/v1",
-//   token: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
-//   groupID: "cohort-22",
-//   // name: userData.name,
-//   // about: userData.about,
-// });
+// ----
 
-// console.log(loader);
+api
+  .getUserData()
+  .then((data) => {
+    profileNameNode.textContent = data?.name;
+    profileAboutNode.textContent = data?.about;
+    profileAvatar.src = data?.avatar;
 
-function renderLoading(isLoading, node) {
-  const loader = node.querySelector(validationConfig.loaderNode);
-  const loaderData = {
-    loading: "...",
-    loaded: "",
-  };
+    editButtonNode.addEventListener("click", () => {
+      nameInput.value = data.name;
+      aboutInput.value = data.about;
 
-  if (isLoading) {
-    loader.textContent = loaderData.loading;
+      profilePopup.openPopup();
+    });
 
-    // node.querySelector(validationConfig.loaderNode).textContent += "...";
-    // console.log(
-    //   (node.querySelector(validationConfig.submitButtonSelector).textContent +=
-    //     "...")
-    // );
-    // console.log("loading...");
-  } else {
-    loader.textContent = loaderData.loaded;
-    // node.querySelector(validationConfig.loaderNode).textContent = "";
-    // console.log("s-t-o-p");
-  }
+    // Вызов попапа смены аватара
+    // profileEditAvatar.addEventListener("click", () => {
+    //   avatarPopup.openPopup();
+    // });
+  })
+  .catch((err) =>
+    console.log("Ошибка при получении данных о пользователе: " + err)
+  );
+
+// ----
+
+function openPopup(dataCard) {
+  popupWithImage.openPopup(dataCard);
 }
 
 function renderUserDataInContent(data) {
@@ -254,18 +255,6 @@ userInfo.setUserInfo({
   name: profileNameNode.textContent,
   about: profileAboutNode.textContent,
 });
-
-// // Вызов попапа редактирования профиля
-// editButtonNode.addEventListener("click", () => {
-//   const getUserInfo = userInfo.getUserInfo();
-
-//   // nameInput.value = userData.name;
-//   // aboutInput.value = userData.about;
-//   nameInput.value = getUserInfo.name;
-//   aboutInput.value = getUserInfo.about;
-
-//   profilePopup.openPopup();
-// });
 
 // ----
 
