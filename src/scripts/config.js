@@ -2,6 +2,7 @@ const validationConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__button",
+  loaderNode: ".popup__loader",
   inputInvalidClass: "popup__input_invalid",
   buttonInvalidClass: "popup__button_invalid",
   popUpMestoForm: ".popup__mesto-form",
