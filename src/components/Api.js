@@ -1,5 +1,5 @@
 export class Api {
-  constructor({ address, token, groupID }) {
+  constructor(address, token, groupID) {
     this._address = address;
     this._token = token;
     this._groupID = groupID;
@@ -50,6 +50,22 @@ export class Api {
       headers: {
         authorization: this._token,
       },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.status}`);
+    });
+  }
+
+  postCard(data) {
+    return fetch(`${this._address}/${this._groupID}/cards`, {
+      method: "POST",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     }).then((response) => {
       if (response.ok) {
         return response.json();

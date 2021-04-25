@@ -1,7 +1,7 @@
 import "./index.css";
 
-import { initialCards } from "../scripts/initial-cards.js";
 import {
+  apiConfig,
   validationConfig,
   editButtonNode,
   profileNameNode,
@@ -40,11 +40,7 @@ const popupWithImage = new PopupWithImage(popupImg);
 
 const userInfo = new UserInfo(profileNameNode, profileAboutNode);
 
-const api = new Api({
-  address: "https://mesto.nomoreparties.co/v1",
-  token: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
-  groupID: "cohort-22",
-});
+const api = new Api(apiConfig.address, apiConfig.token, apiConfig.groupID);
 
 // ----
 
@@ -141,10 +137,26 @@ const avatarPopup = new PopupWithForm({
 
 // -----------
 
+const createCard = (data) => {
+  return new Card(data, selectorsObj, openPopup).createCard(apiConfig.userId);
+};
+
+const section = (data) => {
+  return new Section(
+    {
+      items: data,
+      renderer: (item) => {
+        section(data).addItem(createCard(item));
+      },
+    },
+    cardsContainer
+  );
+};
+
 api
   .getCards()
   .then((data) => {
-    console.log(data);
+    section(data).renderAll();
   })
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
@@ -154,30 +166,33 @@ function openPopup(dataCard) {
   popupWithImage.openPopup(dataCard);
 }
 
-const createCard = (data) => {
-  return new Card(data, selectorsObj, openPopup).createCard();
-};
-
-const section = new Section(
-  {
-    items: initialCards,
-    renderer: (item) => {
-      section.addItem(createCard(item));
-    },
-  },
-  cardsContainer
-);
-
 const mestoPopup = new PopupWithForm({
   popup: popupAddNode,
   handleSubmit: (item) => {
-    section.addItem(createCard(item));
+    renderLoading(true, popupAddNode);
 
+    const newCardsData = {
+      name: item.name,
+      link: item.link,
+      likes: [],
+      // owner: {
+      //   _id: apiConfig.userId,
+      // },
+    };
+
+    console.log(newCardsData.likes.length);
+
+    api
+      .postCard(newCardsData)
+      .catch((err) => console.log("Ошибка при получении карточек: " + err))
+      .finally(() => {
+        renderLoading(false, popupAddNode);
+      });
+
+    section().addItemPrepend(createCard(newCardsData));
     mestoPopup.closePopup();
   },
 });
-
-// ----
 
 // ----
 
@@ -192,8 +207,6 @@ userInfo.setUserInfo({
 addButtonNode.addEventListener("click", () => {
   mestoPopup.openPopup();
 });
-
-section.renderAll();
 
 mestoPopup.setEventListeners();
 profilePopup.setEventListeners();
