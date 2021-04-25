@@ -15,6 +15,7 @@ const selectorsObj = {
   editButtonNode: ".profile__edit",
   profileNameNode: ".profile__name",
   profileAboutNode: ".profile__about",
+  profileAvatar: ".profile__avatar",
   addButtonNode: ".profile__add-button",
 
   popupProfileNode: ".popup-profile",
@@ -42,6 +43,7 @@ const selectorsObj = {
 const editButtonNode = qSel(selectorsObj.editButtonNode);
 const profileNameNode = qSel(selectorsObj.profileNameNode);
 const profileAboutNode = qSel(selectorsObj.profileAboutNode);
+const profileAvatar = qSel(selectorsObj.profileAvatar);
 const addButtonNode = qSel(selectorsObj.addButtonNode);
 
 const popupProfileNode = qSel(selectorsObj.popupProfileNode);
@@ -70,6 +72,7 @@ export {
   editButtonNode,
   profileNameNode,
   profileAboutNode,
+  profileAvatar,
   addButtonNode,
   popupProfileNode,
   closeButtonNode,
@@ -88,29 +91,3 @@ export {
   cardTemplate,
   selectorsObj,
 };
-
-// const editButtonNode = document.querySelector(".profile__edit");
-// const profileNameNode = document.querySelector(".profile__name");
-// const profileAboutNode = document.querySelector(".profile__about");
-// const addButtonNode = document.querySelector(".profile__add-button");
-
-// // const popupNode = document.querySelectorAll('.popup');
-// const popupProfileNode = document.querySelector(".popup-profile");
-// const closeButtonNode = popupProfileNode.querySelector(".popup__close");
-// const nameInput = popupProfileNode.querySelector(".popup__name");
-// const aboutInput = popupProfileNode.querySelector(".popup__about");
-// const formElement = popupProfileNode.querySelector(".popup__profile-form");
-
-// const popupAddNode = document.querySelector(".popup-add");
-// const closeButtonAddNode = popupAddNode.querySelector(".popup__close");
-// const mestoTitleInput = popupAddNode.querySelector(".popup__mesto-title");
-// const mestoLinkInput = popupAddNode.querySelector(".popup__mesto-link");
-// const mestoFormElement = popupAddNode.querySelector(".popup__mesto-form");
-
-// const popupImg = document.querySelector(".popup-img");
-// const popupImgSource = document.querySelector(".popup__img");
-// const popupImgCaption = document.querySelector(".popup__img-caption");
-
-// const cardsContainer = document.querySelector(".elements");
-// // const popupImgContainer = document.querySelector('.elements__element');
-// const cardTemplate = document.querySelector("#card-template").content;
