@@ -49,11 +49,10 @@
       </header>
       <main class="content">
         <section class="profile">
-          <img
-            src="<%=require('./src/images/avatar.png')%>"
-            alt="Изображение профиля"
-            class="profile__avatar"
-          />
+          <div class="profile__avatar-container">
+            <div class="profile__edit-avatar"></div>
+            <img src="#" alt="Изображение профиля" class="profile__avatar" />
+          </div>
           <div class="profile__info">
             <h1 class="profile__name"></h1>
             <button
