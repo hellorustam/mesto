@@ -3,12 +3,14 @@ import { apiConfig } from "../scripts/apiConfig.js";
 const api = new Api({});
 
 export class Card {
-  constructor(data, config, handleImagePopup) {
+  constructor(data, config, handleImagePopup, { removeLike, addLike }) {
     this._data = data;
     this._text = data.name;
     this._img = data.link;
     this._config = config;
     this._handleImagePopup = handleImagePopup;
+    this._removeLike = removeLike;
+    this._addLike = addLike;
   }
 
   _getTemplate() {
@@ -17,37 +19,48 @@ export class Card {
 
   _likeCard(node) {
     const elementLike = node.querySelector(".elements__like");
+    const countLike = elementLike.querySelector(".elements__count_like");
 
-    elementLike.addEventListener("click", (evt) => {
-      // const eventTarget = evt.target;
-      // const likeActive = eventTarget.querySelector(".elements__like_active");
-      const likeCounter = elementLike.querySelector(".elements__count_like");
-
-      // api.getUserData().then((dataUser) => {
-      //   this._data.likes.forEach((i) => {
-      //     if (i._id === dataUser._id) {
-      //       console.log("yes");
-      //       elementLike.classList.toggle("elements__like_active");
-      //     } else {
-      //       console.log("no");
-      //       elementLike.classList.toggle("elements__like_active");
-      //     }
-      //   });
-      // });
+    elementLike.addEventListener("click", () => {
+      // this._addLike(this._data._id, countLike);
+      // this._removeLike(this._data._id, countLike);
+      // console.log(this._data._id); // id Card
+      // console.log(this._data.likes);
 
       if (elementLike.classList.contains("elements__like_active")) {
-        api.removeLikeCard(this._data._id).then((data) => {
-          likeCounter.textContent = data.likes.length;
-        });
-
+        this._removeLike(this._data._id, countLike);
         elementLike.classList.toggle("elements__like_active");
       } else {
-        api.addLikeCard(this._data._id).then((data) => {
-          likeCounter.textContent = data.likes.length;
-        });
-
+        this._addLike(this._data._id, countLike);
         elementLike.classList.toggle("elements__like_active");
       }
+
+      // this._data.likes.forEach((i) => {
+      //   // console.log(i);
+      //   if (this._data.likes.length >= 0) {
+      //     this._addLike(this._data._id, countLike);
+      //   } else if (i._id === this._config.userId) {
+      //     this._removeLike(this._data._id, countLike);
+      //   }
+      //   // if (i._id.includes(this._config.userId)) {
+      //   //   this._removeLike(this._data._id, countLike);
+      //   // }
+      // });
+
+      // this._data.likes.forEach((i) => {
+      // if (this._data.likes.length >= 0) {
+      //   this._addLike(this._data._id, countLike);
+      // } else if (i._id.includes(this._config.userId)) {
+      //   this._removeLike(this._data._id, countLike);
+      // }
+      // if (i._id.includes(this._config.userId)) {
+      //   console.log("includes id");
+      //   // this._removeLike(this._data._id, countLike);
+      // } else if (i._id.length === 0) {
+      //   console.log(false);
+      //   // this._addLike(this._data._id, countLike);
+      // }
+      // });
     });
   }
 

@@ -41,6 +41,8 @@ const selectorsObj = {
   mestoTitleInput: ".popup__mesto-title",
   mestoLinkInput: ".popup__mesto-link",
   mestoFormElement: ".popup__mesto-form",
+  elementsLike: ".elements__like",
+  // countLike: ".elements__count_like",
 
   popupImg: ".popup-img",
   popupImgSource: ".popup__img",
@@ -48,6 +50,8 @@ const selectorsObj = {
 
   cardsContainer: ".elements",
   cardTemplate: "#card-template",
+
+  userId: "746c6052f7a7f26f04c96054",
 };
 
 //---
@@ -75,6 +79,10 @@ const closeButtonAddNode = popupAddNode.querySelector(
 const mestoTitleInput = qSel(selectorsObj.mestoTitleInput);
 const mestoLinkInput = qSel(selectorsObj.mestoLinkInput);
 const mestoFormElement = qSel(selectorsObj.mestoFormElement);
+const elementsLike = qSel(selectorsObj.elementsLike);
+// const countLike = selectorsObj.elementsLike.querySelector(
+//   selectorsObj.countLike
+// );
 
 const popupImg = qSel(selectorsObj.popupImg);
 const popupImgSource = qSel(selectorsObj.popupImgSource);
@@ -105,6 +113,8 @@ export {
   mestoTitleInput,
   mestoLinkInput,
   mestoFormElement,
+  elementsLike,
+  // countLike,
   popupImg,
   popupImgSource,
   popupImgCaption,
