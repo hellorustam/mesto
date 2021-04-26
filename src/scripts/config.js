@@ -42,7 +42,7 @@ const selectorsObj = {
   mestoLinkInput: ".popup__mesto-link",
   mestoFormElement: ".popup__mesto-form",
   elementsLike: ".elements__like",
-  // countLike: ".elements__count_like",
+  elementsRemove: ".elements__remove",
 
   popupImg: ".popup-img",
   popupImgSource: ".popup__img",
@@ -80,9 +80,7 @@ const mestoTitleInput = qSel(selectorsObj.mestoTitleInput);
 const mestoLinkInput = qSel(selectorsObj.mestoLinkInput);
 const mestoFormElement = qSel(selectorsObj.mestoFormElement);
 const elementsLike = qSel(selectorsObj.elementsLike);
-// const countLike = selectorsObj.elementsLike.querySelector(
-//   selectorsObj.countLike
-// );
+const elementsRemove = qSel(selectorsObj.elementsRemove);
 
 const popupImg = qSel(selectorsObj.popupImg);
 const popupImgSource = qSel(selectorsObj.popupImgSource);
@@ -114,7 +112,7 @@ export {
   mestoLinkInput,
   mestoFormElement,
   elementsLike,
-  // countLike,
+  elementsRemove,
   popupImg,
   popupImgSource,
   popupImgCaption,
