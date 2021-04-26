@@ -246,6 +246,9 @@ const mestoPopup = new PopupWithForm({
 
     api
       .postCard(newCardsData)
+      .then((data) => {
+        return (newCardsData._id = data._id);
+      })
       .catch((err) => console.log("Ошибка при получении карточек: " + err))
       .finally(() => {
         renderLoading(false, popupAddNode);

@@ -22,11 +22,6 @@ export class Card {
     const countLike = elementLike.querySelector(".elements__count_like");
 
     elementLike.addEventListener("click", () => {
-      // this._addLike(this._data._id, countLike);
-      // this._removeLike(this._data._id, countLike);
-      // console.log(this._data._id); // id Card
-      // console.log(this._data.likes);
-
       if (elementLike.classList.contains("elements__like_active")) {
         this._removeLike(this._data._id, countLike);
         elementLike.classList.toggle("elements__like_active");
