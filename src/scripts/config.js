@@ -32,6 +32,7 @@ const selectorsObj = {
   aboutInput: ".popup__about",
   formElement: ".popup__profile-form",
 
+  popupDelCard: ".popup-del-card",
   popupAddNode: ".popup-add",
   popupAvatarNode: ".popup-avatar",
   popupAvatarForm: ".popup__avatar-form",
@@ -41,7 +42,7 @@ const selectorsObj = {
   mestoLinkInput: ".popup__mesto-link",
   mestoFormElement: ".popup__mesto-form",
   elementsLike: ".elements__like",
-  // countLike: ".elements__count_like",
+  elementsRemove: ".elements__remove",
 
   popupImg: ".popup-img",
   popupImgSource: ".popup__img",
@@ -67,6 +68,7 @@ const nameInput = qSel(selectorsObj.nameInput);
 const aboutInput = qSel(selectorsObj.aboutInput);
 const formElement = qSel(selectorsObj.formElement);
 
+const popupDelCardNode = qSel(selectorsObj.popupDelCard);
 const popupAddNode = qSel(selectorsObj.popupAddNode);
 const popupAvatarNode = qSel(selectorsObj.popupAvatarNode);
 const popupAvatarForm = qSel(selectorsObj.popupAvatarForm);
@@ -78,9 +80,7 @@ const mestoTitleInput = qSel(selectorsObj.mestoTitleInput);
 const mestoLinkInput = qSel(selectorsObj.mestoLinkInput);
 const mestoFormElement = qSel(selectorsObj.mestoFormElement);
 const elementsLike = qSel(selectorsObj.elementsLike);
-// const countLike = selectorsObj.elementsLike.querySelector(
-//   selectorsObj.countLike
-// );
+const elementsRemove = qSel(selectorsObj.elementsRemove);
 
 const popupImg = qSel(selectorsObj.popupImg);
 const popupImgSource = qSel(selectorsObj.popupImgSource);
@@ -105,13 +105,14 @@ export {
   nameInput,
   aboutInput,
   formElement,
+  popupDelCardNode,
   popupAddNode,
   closeButtonAddNode,
   mestoTitleInput,
   mestoLinkInput,
   mestoFormElement,
   elementsLike,
-  // countLike,
+  elementsRemove,
   popupImg,
   popupImgSource,
   popupImgCaption,
