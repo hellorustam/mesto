@@ -17,7 +17,7 @@ import {
   popupDelCardNode,
   popupAddNode,
   elementsLike,
-  // countLike,
+  elementsRemove,
   popupImg,
   cardsContainer,
   selectorsObj,
@@ -25,12 +25,11 @@ import {
 
 import { Card } from "../components/Card.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
-import { PopupWithImage } from "../components/PopupWithImage.js";
 import { PopupDelCard } from "../components/PopupDelCard.js";
+import { PopupWithImage } from "../components/PopupWithImage.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { Section } from "../components/Section.js";
-import { PopupWithImage } from "../components/PopupWithImage.js";
 import { Api } from "../components/Api.js";
 
 // ----
@@ -202,6 +201,14 @@ const createCard = (data) => {
         target.textContent = data.likes.length;
       });
     },
+    deleteCard: (id) => {
+      api
+        .deleteCard(id)
+        .catch((err) => console.log("Ошибка при получении карточек: " + err));
+    },
+    popupDelCard: () => {
+      popupDelCard.openPopup();
+    },
   }).createCard(apiConfig.userId);
 };
 
@@ -224,7 +231,23 @@ api
   })
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
-// -----------
+// ----
+
+const popupDelCard = new PopupDelCard({
+  popup: popupDelCardNode,
+  handleSubmit: () => {
+    renderLoading(true, popupDelCardNode);
+    // api
+    //   .deleteCard(id)
+    //   .catch((err) => console.log("Ошибка при получении карточек: " + err));
+    popupDelCard.closePopup();
+  },
+});
+
+// popupDelCard.openPopup();
+popupDelCard.setEventListeners();
+
+// ----
 
 function openPopup(dataCard) {
   popupWithImage.openPopup(dataCard);

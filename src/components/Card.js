@@ -3,7 +3,12 @@ import { apiConfig } from "../scripts/apiConfig.js";
 const api = new Api({});
 
 export class Card {
-  constructor(data, config, handleImagePopup, { removeLike, addLike }) {
+  constructor(
+    data,
+    config,
+    handleImagePopup,
+    { removeLike, addLike, deleteCard, popupDelCard }
+  ) {
     this._data = data;
     this._text = data.name;
     this._img = data.link;
@@ -11,6 +16,8 @@ export class Card {
     this._handleImagePopup = handleImagePopup;
     this._removeLike = removeLike;
     this._addLike = addLike;
+    this._deleteCard = deleteCard;
+    this._popupDelCard = popupDelCard;
   }
 
   _getTemplate() {
@@ -60,24 +67,17 @@ export class Card {
   }
 
   _removeCard(node) {
+    const popupDelCard = document.querySelector(this._config.popupDelCard);
+
     node.querySelector(".elements__remove").addEventListener("click", (evt) => {
-      const delPopup = document.querySelector(this._config.popupDelCard);
-      const delPopupForm = delPopup.querySelector(".popup__form");
+      const currentCard = evt.currentTarget.closest(".elements__element");
+      // popupDelCard.classList.toggle("popup_visible");
+      this._popupDelCard();
 
-      delPopupForm.addEventListener("submit", () => {
-        return api.deleteCard(this._data._id).then((data) => {
-          console.log(data);
-          delPopup.classList.toggle("popup_visible");
-          location.reload();
-        });
+      popupDelCard.addEventListener("submit", () => {
+        this._deleteCard(this._data._id);
+        currentCard.remove();
       });
-
-      // api.deleteCard(this._data._id).then((data) => {
-      //   console.log(data);
-      // });
-
-      delPopup.classList.toggle("popup_visible");
-      // evt.currentTarget.closest(".elements__element").remove();
     });
   }
 
