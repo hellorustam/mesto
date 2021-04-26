@@ -15,6 +15,8 @@ import {
   nameInput,
   aboutInput,
   popupAddNode,
+  elementsLike,
+  // countLike,
   popupImg,
   cardsContainer,
   selectorsObj,
@@ -135,10 +137,67 @@ const avatarPopup = new PopupWithForm({
   },
 });
 
-// -----------
+// ----
+
+// console.log(countLike);
+
+// const handleLike = () => {
+//   return elementsLike.addEventListener("click", () => {
+//     elementsLike.classList.toggle("elements__like_active");
+//     // this._data.likes.forEach((i) => {
+//     //   // this._handleLike(this._data._id);
+
+//     //   if (i._id.includes(this._config.userId)) {
+//     //     this._handleLike.removeLike(this._data._id);
+//     //   } else {
+//     //     this._handleLike.addLike(this._data._id);
+//     //   }
+//     // });
+//   });
+// };
+
+// const handleLike = {
+//   removeLike: (id) => {
+//     return api.removeLikeCard(id).then((data) => {
+//       console.log(data.likes.length);
+//       countLike.textContent = data.likes.length;
+//     });
+//   },
+//   addLike: (id) => {
+//     return api.addLikeCard(id).then((data) => {
+//       console.log(data.likes.length);
+//       countLike.textContent = data.likes.length;
+//     });
+//   },
+// };
+
+// function handleLike(id) {
+//   if (id.includes(apiConfig.userId)) {
+//     api.removeLikeCard(id).then((data) => {
+//       countLike.textContent = data.likes.length;
+//       console.log(data);
+//     });
+//   } else {
+//     api.addLikeCard(id).then((data) => {
+//       countLike.textContent = data.likes.length;
+//       console.log(data);
+//     });
+//   }
+// }
 
 const createCard = (data) => {
-  return new Card(data, selectorsObj, openPopup).createCard(apiConfig.userId);
+  return new Card(data, selectorsObj, openPopup, {
+    removeLike: (id, target) => {
+      api.removeLikeCard(id).then((data) => {
+        target.textContent = data.likes.length;
+      });
+    },
+    addLike: (id, target) => {
+      api.addLikeCard(id).then((data) => {
+        target.textContent = data.likes.length;
+      });
+    },
+  }).createCard(apiConfig.userId);
 };
 
 const section = (data) => {
@@ -175,12 +234,10 @@ const mestoPopup = new PopupWithForm({
       name: item.name,
       link: item.link,
       likes: [],
-      // owner: {
-      //   _id: apiConfig.userId,
-      // },
+      owner: {
+        _id: apiConfig.userId,
+      },
     };
-
-    console.log(newCardsData.likes.length);
 
     api
       .postCard(newCardsData)
