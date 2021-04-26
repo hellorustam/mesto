@@ -43,7 +43,7 @@ export class Api {
     });
   }
 
-  // ---------
+  // ----
 
   getCards() {
     return fetch(`${this._address}/${this._groupID}/cards`, {
@@ -74,5 +74,37 @@ export class Api {
     });
   }
 
-  // ---------
+  // ----
+
+  addLikeCard(id) {
+    return fetch(`${this._address}/${this._groupID}/cards/likes/${id}`, {
+      method: "PUT",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.status}`);
+    });
+  }
+
+  removeLikeCard(id) {
+    return fetch(`${this._address}/${this._groupID}/cards/likes/${id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.status}`);
+    });
+  }
+
+  // ----
 }
