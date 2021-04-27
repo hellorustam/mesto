@@ -41,8 +41,8 @@ class FormValidator {
     this._form.addEventListener("reset", () => {
       inputList.forEach((inputElement) => {
         this._hideError(inputElement);
-        this._setButtonState(false);
       });
+      this._setButtonState(false);
     });
 
     inputList.forEach((input) => {
