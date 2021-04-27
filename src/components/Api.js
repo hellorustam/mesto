@@ -7,18 +7,22 @@ export class Api {
 
   // ----
 
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
+  // ----
+
   getUserData() {
     return fetch(`${this._address}/${this._groupID}/users/me`, {
       headers: {
         authorization: this._token,
         "Content-Type": "application/json",
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${response.status}`);
-    });
+    }).then(this._checkResponse);
   }
 
   changeUserData(data) {
@@ -29,7 +33,7 @@ export class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }).then(this._checkResponse);
   }
 
   changeAvatarData(data) {
@@ -40,7 +44,7 @@ export class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }).then(this._checkResponse);
   }
 
   // ----
@@ -50,12 +54,7 @@ export class Api {
       headers: {
         authorization: this._token,
       },
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(`Ошибка: ${response.status}`);
-    });
+    }).then(this._checkResponse);
   }
 
   postCard(data) {
@@ -66,12 +65,7 @@ export class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(`Ошибка: ${response.status}`);
-    });
+    }).then(this._checkResponse);
   }
 
   // ----
@@ -83,12 +77,7 @@ export class Api {
         authorization: this._token,
         "Content-Type": "application/json",
       },
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(`Ошибка: ${response.status}`);
-    });
+    }).then(this._checkResponse);
   }
 
   removeLikeCard(id) {
@@ -98,12 +87,7 @@ export class Api {
         authorization: this._token,
         "Content-Type": "application/json",
       },
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(`Ошибка: ${response.status}`);
-    });
+    }).then(this._checkResponse);
   }
 
   // ----
@@ -115,12 +99,7 @@ export class Api {
         authorization: this._token,
         "Content-Type": "application/json",
       },
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(`Ошибка: ${response.status}`);
-    });
+    }).then(this._checkResponse);
   }
 
   // ----

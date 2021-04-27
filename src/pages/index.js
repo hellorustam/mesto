@@ -42,9 +42,18 @@ const formAvatar = new FormValidator(validationConfig, popupAvatarForm);
 
 const popupWithImage = new PopupWithImage(popupImg);
 
-const userInfo = new UserInfo(profileNameNode, profileAboutNode);
+const userInfo = new UserInfo(profileNameNode, profileAboutNode, profileAvatar);
 
 const api = new Api(apiConfig.address, apiConfig.token, apiConfig.groupID);
+
+const section = new Section(
+  {
+    renderer: (item) => {
+      section.addItem(createCard(item));
+    },
+  },
+  cardsContainer
+);
 
 // ----
 
@@ -59,38 +68,46 @@ function renderLoading(isLoading, node) {
 
 // ----
 
-api
+const userDataArr = {};
+
+const getUserData = api
   .getUserData()
   .then((data) => {
+    // userDataArr.name = data?.name;
+    // userDataArr.about = data?.about;
+    // userDataArr.avatar = data?.avatar;
+    userDataArr.id = data?._id;
     profileNameNode.textContent = data?.name;
     profileAboutNode.textContent = data?.about;
     profileAvatar.src = data?.avatar;
-
-    profileEditAvatar.addEventListener("click", () => {
-      avatarPopup.openPopup();
-    });
   })
   .catch((err) =>
     console.log("Ошибка при получении данных о пользователе: " + err)
   );
 
-editButtonNode.addEventListener("click", () => {
-  api
-    .getUserData()
-    .then((data) => {
-      nameInput.value = data?.name;
-      aboutInput.value = data?.about;
-    })
-    .catch((err) =>
-      console.log("Ошибка при получении данных о пользователе: " + err)
-    );
+Promise.all([getUserData, getCards]).catch((err) =>
+  console.log("Ошибка при получении данных о пользователе: " + err)
+);
 
+profileEditAvatar.addEventListener("click", () => {
+  avatarPopup.openPopup();
+});
+
+editButtonNode.addEventListener("click", (evt) => {
+  const userData = userInfo.getUserInfo();
+  nameInput.value = userData?.name.textContent;
+  aboutInput.value = userData?.about.textContent;
   profilePopup.openPopup();
 });
 
 const changeUserData = (data) => {
   return api
     .changeUserData(data)
+    .then((data) => {
+      userInfo.setUserInfo(data);
+      userInfo.updateUserInfo();
+      profilePopup.closePopup();
+    })
     .catch((err) => console.log("Ошибка при получении карточек: " + err))
     .finally(() => {
       renderLoading(false, popupProfileNode);
@@ -100,9 +117,6 @@ const changeUserData = (data) => {
 const profilePopup = new PopupWithForm({
   popup: popupProfileNode,
   handleSubmit: (data) => {
-    userInfo.setUserInfo(data);
-    userInfo.updateUserInfo();
-
     renderLoading(true, popupProfileNode);
 
     const bodyUserData = {
@@ -111,7 +125,6 @@ const profilePopup = new PopupWithForm({
     };
 
     changeUserData(bodyUserData);
-    profilePopup.closePopup();
   },
 });
 
@@ -120,6 +133,11 @@ const profilePopup = new PopupWithForm({
 const changeAvatarData = (data) => {
   return api
     .changeAvatarData(data)
+    .then((data) => {
+      userInfo.setUserInfo(data);
+      userInfo.updateUserInfo();
+      avatarPopup.closePopup();
+    })
     .catch((err) => console.log("Ошибка при получении аватара: " + err))
     .finally(() => {
       renderLoading(false, popupAvatarNode);
@@ -133,117 +151,64 @@ const avatarPopup = new PopupWithForm({
       avatar: data.link,
     };
     renderLoading(true, popupAvatarNode);
-    profileAvatar.src = data?.link;
     changeAvatarData(newAvatarData);
-    avatarPopup.closePopup();
   },
 });
 
 // ----
 
-// console.log(countLike);
-
-// const handleLike = () => {
-//   return elementsLike.addEventListener("click", () => {
-//     elementsLike.classList.toggle("elements__like_active");
-//     // this._data.likes.forEach((i) => {
-//     //   // this._handleLike(this._data._id);
-
-//     //   if (i._id.includes(this._config.userId)) {
-//     //     this._handleLike.removeLike(this._data._id);
-//     //   } else {
-//     //     this._handleLike.addLike(this._data._id);
-//     //   }
-//     // });
-//   });
-// };
-
-// const handleLike = {
-//   removeLike: (id) => {
-//     return api.removeLikeCard(id).then((data) => {
-//       console.log(data.likes.length);
-//       countLike.textContent = data.likes.length;
-//     });
-//   },
-//   addLike: (id) => {
-//     return api.addLikeCard(id).then((data) => {
-//       console.log(data.likes.length);
-//       countLike.textContent = data.likes.length;
-//     });
-//   },
-// };
-
-// function handleLike(id) {
-//   if (id.includes(apiConfig.userId)) {
-//     api.removeLikeCard(id).then((data) => {
-//       countLike.textContent = data.likes.length;
-//       console.log(data);
-//     });
-//   } else {
-//     api.addLikeCard(id).then((data) => {
-//       countLike.textContent = data.likes.length;
-//       console.log(data);
-//     });
-//   }
-// }
-
 const createCard = (data) => {
   return new Card(data, selectorsObj, openPopup, {
     removeLike: (id, target) => {
-      api.removeLikeCard(id).then((data) => {
-        target.textContent = data.likes.length;
-      });
+      api
+        .removeLikeCard(id)
+        .then((data) => {
+          target.textContent = data.likes.length;
+        })
+        .catch((err) => console.log("Ошибка: " + err));
     },
     addLike: (id, target) => {
-      api.addLikeCard(id).then((data) => {
-        target.textContent = data.likes.length;
-      });
-    },
-    deleteCard: (id) => {
       api
-        .deleteCard(id)
-        .catch((err) => console.log("Ошибка при получении карточек: " + err));
+        .addLikeCard(id)
+        .then((data) => {
+          target.textContent = data.likes.length;
+        })
+        .catch((err) => console.log("Ошибка: " + err));
     },
-    popupDelCard: () => {
-      popupDelCard.openPopup();
+    popupDelCard: (id, node) => {
+      popupDelCard().openPopup();
+      popupDelCard(id, node).setEventListeners();
     },
-  }).createCard(apiConfig.userId);
+  }).createCard(userDataArr.id);
 };
 
-const section = (data) => {
-  return new Section(
-    {
-      items: data,
-      renderer: (item) => {
-        section(data).addItem(createCard(item));
-      },
-    },
-    cardsContainer
-  );
-};
-
-api
+const getCards = api
   .getCards()
   .then((data) => {
-    section(data).renderAll();
+    section.renderAll(data);
   })
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
 // ----
 
-const popupDelCard = new PopupDelCard({
-  popup: popupDelCardNode,
-  handleSubmit: () => {
-    renderLoading(true, popupDelCardNode);
-    // api
-    //   .deleteCard(id)
-    //   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-    popupDelCard.closePopup();
-  },
-});
+const popupDelCard = (id, node) => {
+  return new PopupDelCard({
+    popup: popupDelCardNode,
+    handleSubmit: () => {
+      renderLoading(true, popupDelCardNode);
+      api
+        .deleteCard(id)
+        .then(() => {
+          popupDelCard().closePopup();
+          node.remove();
+          renderLoading(false, popupDelCardNode);
+        })
+        .catch((err) => console.log("Ошибка при получении карточек: " + err));
+    },
+  });
+};
 
-// popupDelCard.openPopup();
-popupDelCard.setEventListeners();
+// popupDelCard().setEventListeners();
 
 // ----
 
@@ -261,31 +226,31 @@ const mestoPopup = new PopupWithForm({
       link: item.link,
       likes: [],
       owner: {
-        _id: apiConfig.userId,
+        _id: userDataArr.id,
       },
     };
 
     api
       .postCard(newCardsData)
       .then((data) => {
-        return (newCardsData._id = data._id);
+        newCardsData._id = data._id;
+        section.addItemPrepend(createCard(newCardsData));
+        mestoPopup.closePopup();
       })
       .catch((err) => console.log("Ошибка при получении карточек: " + err))
       .finally(() => {
         renderLoading(false, popupAddNode);
       });
-
-    section().addItemPrepend(createCard(newCardsData));
-    mestoPopup.closePopup();
   },
 });
 
 // ----
 
-userInfo.setUserInfo({
-  name: profileNameNode.textContent,
-  about: profileAboutNode.textContent,
-});
+// userInfo.setUserInfo({
+//   name: profileNameNode.textContent,
+//   about: profileAboutNode.textContent,
+//   avatar: profileAvatar.src,
+// });
 
 // ----
 

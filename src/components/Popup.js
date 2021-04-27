@@ -15,7 +15,7 @@ export class Popup {
 
   _handleEscClose = (evt) => {
     if (evt.key === "Escape") {
-      this.closePopup(this._popup);
+      this.closePopup();
     }
   };
 
@@ -25,7 +25,7 @@ export class Popup {
         evt.target.classList.contains("popup") ||
         evt.target.classList.contains("popup__close")
       ) {
-        this.closePopup(this._popup);
+        this.closePopup();
       }
     });
   }

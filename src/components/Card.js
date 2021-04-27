@@ -3,7 +3,7 @@ export class Card {
     data,
     config,
     handleImagePopup,
-    { removeLike, addLike, deleteCard, popupDelCard }
+    { removeLike, addLike, popupDelCard }
   ) {
     this._data = data;
     this._text = data.name;
@@ -12,7 +12,6 @@ export class Card {
     this._handleImagePopup = handleImagePopup;
     this._removeLike = removeLike;
     this._addLike = addLike;
-    this._deleteCard = deleteCard;
     this._popupDelCard = popupDelCard;
   }
 
@@ -32,48 +31,13 @@ export class Card {
         this._addLike(this._data._id, countLike);
         elementLike.classList.toggle("elements__like_active");
       }
-
-      // this._data.likes.forEach((i) => {
-      //   // console.log(i);
-      //   if (this._data.likes.length >= 0) {
-      //     this._addLike(this._data._id, countLike);
-      //   } else if (i._id === this._config.userId) {
-      //     this._removeLike(this._data._id, countLike);
-      //   }
-      //   // if (i._id.includes(this._config.userId)) {
-      //   //   this._removeLike(this._data._id, countLike);
-      //   // }
-      // });
-
-      // this._data.likes.forEach((i) => {
-      // if (this._data.likes.length >= 0) {
-      //   this._addLike(this._data._id, countLike);
-      // } else if (i._id.includes(this._config.userId)) {
-      //   this._removeLike(this._data._id, countLike);
-      // }
-      // if (i._id.includes(this._config.userId)) {
-      //   console.log("includes id");
-      //   // this._removeLike(this._data._id, countLike);
-      // } else if (i._id.length === 0) {
-      //   console.log(false);
-      //   // this._addLike(this._data._id, countLike);
-      // }
-      // });
     });
   }
 
   _removeCard(node) {
-    const popupDelCard = document.querySelector(this._config.popupDelCard);
-
     node.querySelector(".elements__remove").addEventListener("click", (evt) => {
       const currentCard = evt.currentTarget.closest(".elements__element");
-      // popupDelCard.classList.toggle("popup_visible");
-      this._popupDelCard();
-
-      popupDelCard.addEventListener("submit", () => {
-        this._deleteCard(this._data._id);
-        currentCard.remove();
-      });
+      this._popupDelCard(this._data._id, currentCard);
     });
   }
 

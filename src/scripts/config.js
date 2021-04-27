@@ -2,7 +2,6 @@ const apiConfig = {
   address: "https://mesto.nomoreparties.co/v1",
   token: "1f3f6d46-ee23-42d9-b041-2bb6b8e9765e",
   groupID: "cohort-22",
-  userId: "746c6052f7a7f26f04c96054",
 };
 
 const validationConfig = {
