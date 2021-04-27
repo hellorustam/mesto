@@ -1,7 +1,8 @@
 export class UserInfo {
-  constructor(name, about) {
+  constructor(name, about, avatar) {
     this._nameEdit = name;
     this._aboutEdit = about;
+    this._avatar = avatar;
     this._name = "";
     this._about = "";
   }
@@ -9,6 +10,7 @@ export class UserInfo {
   setUserInfo(data) {
     this._name = data.name;
     this._about = data.about;
+    this._avatar = data.avatar;
   }
 
   updateUserInfo() {

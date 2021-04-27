@@ -42,7 +42,7 @@ const formAvatar = new FormValidator(validationConfig, popupAvatarForm);
 
 const popupWithImage = new PopupWithImage(popupImg);
 
-const userInfo = new UserInfo(profileNameNode, profileAboutNode);
+const userInfo = new UserInfo(profileNameNode, profileAboutNode, profileAvatar);
 
 const api = new Api(apiConfig.address, apiConfig.token, apiConfig.groupID);
 
@@ -147,52 +147,6 @@ const avatarPopup = new PopupWithForm({
 
 // ----
 
-// console.log(countLike);
-
-// const handleLike = () => {
-//   return elementsLike.addEventListener("click", () => {
-//     elementsLike.classList.toggle("elements__like_active");
-//     // this._data.likes.forEach((i) => {
-//     //   // this._handleLike(this._data._id);
-
-//     //   if (i._id.includes(this._config.userId)) {
-//     //     this._handleLike.removeLike(this._data._id);
-//     //   } else {
-//     //     this._handleLike.addLike(this._data._id);
-//     //   }
-//     // });
-//   });
-// };
-
-// const handleLike = {
-//   removeLike: (id) => {
-//     return api.removeLikeCard(id).then((data) => {
-//       console.log(data.likes.length);
-//       countLike.textContent = data.likes.length;
-//     });
-//   },
-//   addLike: (id) => {
-//     return api.addLikeCard(id).then((data) => {
-//       console.log(data.likes.length);
-//       countLike.textContent = data.likes.length;
-//     });
-//   },
-// };
-
-// function handleLike(id) {
-//   if (id.includes(apiConfig.userId)) {
-//     api.removeLikeCard(id).then((data) => {
-//       countLike.textContent = data.likes.length;
-//       console.log(data);
-//     });
-//   } else {
-//     api.addLikeCard(id).then((data) => {
-//       countLike.textContent = data.likes.length;
-//       console.log(data);
-//     });
-//   }
-// }
-
 const createCard = (data) => {
   return new Card(data, selectorsObj, openPopup, {
     removeLike: (id, target) => {
@@ -205,13 +159,9 @@ const createCard = (data) => {
         target.textContent = data.likes.length;
       });
     },
-    deleteCard: (id) => {
-      api
-        .deleteCard(id)
-        .catch((err) => console.log("Ошибка при получении карточек: " + err));
-    },
-    popupDelCard: () => {
-      popupDelCard.openPopup();
+    popupDelCard: (id, node) => {
+      popupDelCard().openPopup();
+      popupDelCard(id, node).setEventListeners();
     },
   }).createCard(userDataArr.id);
 };
@@ -237,19 +187,24 @@ api
 
 // ----
 
-const popupDelCard = new PopupDelCard({
-  popup: popupDelCardNode,
-  handleSubmit: () => {
-    renderLoading(true, popupDelCardNode);
-    // api
-    //   .deleteCard(id)
-    //   .catch((err) => console.log("Ошибка при получении карточек: " + err));
-    popupDelCard.closePopup();
-  },
-});
+const popupDelCard = (id, node) => {
+  return new PopupDelCard({
+    popup: popupDelCardNode,
+    handleSubmit: () => {
+      renderLoading(true, popupDelCardNode);
+      api
+        .deleteCard(id)
+        .then(() => {
+          popupDelCard().closePopup();
+          node.remove();
+          renderLoading(false, popupDelCardNode);
+        })
+        .catch((err) => console.log("Ошибка при получении карточек: " + err));
+    },
+  });
+};
 
-// popupDelCard.openPopup();
-popupDelCard.setEventListeners();
+// popupDelCard().setEventListeners();
 
 // ----
 
@@ -291,6 +246,7 @@ const mestoPopup = new PopupWithForm({
 userInfo.setUserInfo({
   name: profileNameNode.textContent,
   about: profileAboutNode.textContent,
+  avatar: profileAvatar.src,
 });
 
 // ----
