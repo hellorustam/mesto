@@ -61,13 +61,13 @@ function renderLoading(isLoading, node) {
 
 const userDataArr = {};
 
-api
+const getUserData = api
   .getUserData()
   .then((data) => {
-    userDataArr.id = data?._id;
     // userDataArr.name = data?.name;
     // userDataArr.about = data?.about;
     // userDataArr.avatar = data?.avatar;
+    userDataArr.id = data?._id;
     profileNameNode.textContent = data?.name;
     profileAboutNode.textContent = data?.about;
     profileAvatar.src = data?.avatar;
@@ -76,20 +76,28 @@ api
     console.log("Ошибка при получении данных о пользователе: " + err)
   );
 
+Promise.all([getUserData, getCards]).catch((err) =>
+  console.log("Ошибка при получении данных о пользователе: " + err)
+);
+
 profileEditAvatar.addEventListener("click", () => {
   avatarPopup.openPopup();
 });
 
 editButtonNode.addEventListener("click", () => {
-  api
-    .getUserData()
-    .then((data) => {
-      nameInput.value = data?.name;
-      aboutInput.value = data?.about;
-    })
-    .catch((err) =>
-      console.log("Ошибка при получении данных о пользователе: " + err)
-    );
+  userInfo.getUserInfo();
+  // nameInput.value = userDataArr?.name;
+  // aboutInput.value = userDataArr?.about;
+
+  // api
+  //   .getUserData()
+  //   .then((data) => {
+  //     nameInput.value = data?.name;
+  //     aboutInput.value = data?.about;
+  //   })
+  //   .catch((err) =>
+  //     console.log("Ошибка при получении данных о пользователе: " + err)
+  //   );
 
   profilePopup.openPopup();
 });
@@ -97,6 +105,11 @@ editButtonNode.addEventListener("click", () => {
 const changeUserData = (data) => {
   return api
     .changeUserData(data)
+    .then((data) => {
+      userInfo.setUserInfo(data);
+      userInfo.updateUserInfo();
+      profilePopup.closePopup();
+    })
     .catch((err) => console.log("Ошибка при получении карточек: " + err))
     .finally(() => {
       renderLoading(false, popupProfileNode);
@@ -106,9 +119,6 @@ const changeUserData = (data) => {
 const profilePopup = new PopupWithForm({
   popup: popupProfileNode,
   handleSubmit: (data) => {
-    userInfo.setUserInfo(data);
-    userInfo.updateUserInfo();
-
     renderLoading(true, popupProfileNode);
 
     const bodyUserData = {
@@ -117,7 +127,6 @@ const profilePopup = new PopupWithForm({
     };
 
     changeUserData(bodyUserData);
-    profilePopup.closePopup();
   },
 });
 
@@ -126,6 +135,11 @@ const profilePopup = new PopupWithForm({
 const changeAvatarData = (data) => {
   return api
     .changeAvatarData(data)
+    .then((data) => {
+      userInfo.setUserInfo(data);
+      userInfo.updateUserInfo();
+      avatarPopup.closePopup();
+    })
     .catch((err) => console.log("Ошибка при получении аватара: " + err))
     .finally(() => {
       renderLoading(false, popupAvatarNode);
@@ -139,9 +153,7 @@ const avatarPopup = new PopupWithForm({
       avatar: data.link,
     };
     renderLoading(true, popupAvatarNode);
-    profileAvatar.src = data?.link;
     changeAvatarData(newAvatarData);
-    avatarPopup.closePopup();
   },
 });
 
@@ -184,7 +196,7 @@ const section = (data) => {
   );
 };
 
-api
+const getCards = api
   .getCards()
   .then((data) => {
     section(data).renderAll();

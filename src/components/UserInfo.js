@@ -2,9 +2,10 @@ export class UserInfo {
   constructor(name, about, avatar) {
     this._nameEdit = name;
     this._aboutEdit = about;
-    this._avatar = avatar;
+    this._avatarEdit = avatar;
     this._name = "";
     this._about = "";
+    this._avatar = "";
   }
 
   setUserInfo(data) {
@@ -16,10 +17,13 @@ export class UserInfo {
   updateUserInfo() {
     this._nameEdit.textContent = this._name;
     this._aboutEdit.textContent = this._about;
+    this._avatarEdit.src = this._avatar;
   }
 
   getUserInfo() {
     return {
+      // name: this._nameEdit,
+      // about: this._aboutEdit,
       name: this._name,
       about: this._about,
     };
