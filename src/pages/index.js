@@ -46,6 +46,15 @@ const userInfo = new UserInfo(profileNameNode, profileAboutNode, profileAvatar);
 
 const api = new Api(apiConfig.address, apiConfig.token, apiConfig.groupID);
 
+const section = new Section(
+  {
+    renderer: (item) => {
+      section.addItem(createCard(item));
+    },
+  },
+  cardsContainer
+);
+
 // ----
 
 function renderLoading(isLoading, node) {
@@ -184,22 +193,10 @@ const createCard = (data) => {
   }).createCard(userDataArr.id);
 };
 
-const section = (data) => {
-  return new Section(
-    {
-      items: data,
-      renderer: (item) => {
-        section(data).addItem(createCard(item));
-      },
-    },
-    cardsContainer
-  );
-};
-
 const getCards = api
   .getCards()
   .then((data) => {
-    section(data).renderAll();
+    section.renderAll(data);
   })
   .catch((err) => console.log("Ошибка при получении карточек: " + err));
 
@@ -254,7 +251,7 @@ const mestoPopup = new PopupWithForm({
         renderLoading(false, popupAddNode);
       });
 
-    section().addItemPrepend(createCard(newCardsData));
+    section.addItemPrepend(createCard(newCardsData));
     mestoPopup.closePopup();
   },
 });

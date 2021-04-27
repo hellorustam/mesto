@@ -1,12 +1,11 @@
 export class Section {
-  constructor({ items, renderer }, container) {
-    this._items = items;
+  constructor({ renderer }, container) {
     this._renderer = renderer;
     this._container = container;
   }
 
-  renderAll() {
-    this._items.map((element) => {
+  renderAll(data) {
+    data.map((element) => {
       this._renderer(element);
     });
   }
