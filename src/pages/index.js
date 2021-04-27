@@ -59,20 +59,26 @@ function renderLoading(isLoading, node) {
 
 // ----
 
+const userDataArr = {};
+
 api
   .getUserData()
   .then((data) => {
+    userDataArr.id = data?._id;
+    // userDataArr.name = data?.name;
+    // userDataArr.about = data?.about;
+    // userDataArr.avatar = data?.avatar;
     profileNameNode.textContent = data?.name;
     profileAboutNode.textContent = data?.about;
     profileAvatar.src = data?.avatar;
-
-    profileEditAvatar.addEventListener("click", () => {
-      avatarPopup.openPopup();
-    });
   })
   .catch((err) =>
     console.log("Ошибка при получении данных о пользователе: " + err)
   );
+
+profileEditAvatar.addEventListener("click", () => {
+  avatarPopup.openPopup();
+});
 
 editButtonNode.addEventListener("click", () => {
   api
@@ -207,7 +213,7 @@ const createCard = (data) => {
     popupDelCard: () => {
       popupDelCard.openPopup();
     },
-  }).createCard(apiConfig.userId);
+  }).createCard(userDataArr.id);
 };
 
 const section = (data) => {
@@ -261,7 +267,7 @@ const mestoPopup = new PopupWithForm({
       link: item.link,
       likes: [],
       owner: {
-        _id: apiConfig.userId,
+        _id: userDataArr.id,
       },
     };
 
