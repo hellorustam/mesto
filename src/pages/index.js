@@ -93,21 +93,10 @@ profileEditAvatar.addEventListener("click", () => {
   avatarPopup.openPopup();
 });
 
-editButtonNode.addEventListener("click", () => {
-  userInfo.getUserInfo();
-  // nameInput.value = userDataArr?.name;
-  // aboutInput.value = userDataArr?.about;
-
-  // api
-  //   .getUserData()
-  //   .then((data) => {
-  //     nameInput.value = data?.name;
-  //     aboutInput.value = data?.about;
-  //   })
-  //   .catch((err) =>
-  //     console.log("Ошибка при получении данных о пользователе: " + err)
-  //   );
-
+editButtonNode.addEventListener("click", (evt) => {
+  const userData = userInfo.getUserInfo();
+  nameInput.value = userData?.name.textContent;
+  aboutInput.value = userData?.about.textContent;
   profilePopup.openPopup();
 });
 
@@ -244,25 +233,24 @@ const mestoPopup = new PopupWithForm({
     api
       .postCard(newCardsData)
       .then((data) => {
-        return (newCardsData._id = data._id);
+        newCardsData._id = data._id;
+        section.addItemPrepend(createCard(newCardsData));
+        mestoPopup.closePopup();
       })
       .catch((err) => console.log("Ошибка при получении карточек: " + err))
       .finally(() => {
         renderLoading(false, popupAddNode);
       });
-
-    section.addItemPrepend(createCard(newCardsData));
-    mestoPopup.closePopup();
   },
 });
 
 // ----
 
-userInfo.setUserInfo({
-  name: profileNameNode.textContent,
-  about: profileAboutNode.textContent,
-  avatar: profileAvatar.src,
-});
+// userInfo.setUserInfo({
+//   name: profileNameNode.textContent,
+//   about: profileAboutNode.textContent,
+//   avatar: profileAvatar.src,
+// });
 
 // ----
 
