@@ -150,14 +150,20 @@ const avatarPopup = new PopupWithForm({
 const createCard = (data) => {
   return new Card(data, selectorsObj, openPopup, {
     removeLike: (id, target) => {
-      api.removeLikeCard(id).then((data) => {
-        target.textContent = data.likes.length;
-      });
+      api
+        .removeLikeCard(id)
+        .then((data) => {
+          target.textContent = data.likes.length;
+        })
+        .catch((err) => console.log("Ошибка: " + err));
     },
     addLike: (id, target) => {
-      api.addLikeCard(id).then((data) => {
-        target.textContent = data.likes.length;
-      });
+      api
+        .addLikeCard(id)
+        .then((data) => {
+          target.textContent = data.likes.length;
+        })
+        .catch((err) => console.log("Ошибка: " + err));
     },
     popupDelCard: (id, node) => {
       popupDelCard().openPopup();
