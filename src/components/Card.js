@@ -36,8 +36,16 @@ export class Card {
 
   _removeCard(node) {
     node.querySelector(".elements__remove").addEventListener("click", (evt) => {
+      // console.log(this._data._id);
+      // console.log(this._popupDelCard(this._data));
+
       const currentCard = evt.currentTarget.closest(".elements__element");
-      this._popupDelCard(this._data._id, currentCard);
+
+      this._popupDelCard();
+      return (this._config.cardToDelete = {
+        id: this._data._id,
+        node: currentCard,
+      });
     });
   }
 
