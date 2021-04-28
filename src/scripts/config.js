@@ -49,6 +49,10 @@ const selectorsObj = {
 
   cardsContainer: ".elements",
   cardTemplate: "#card-template",
+  cardToDelete: {
+    id: undefined,
+    node: undefined,
+  },
 };
 
 //---

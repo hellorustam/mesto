@@ -22,10 +22,8 @@ export class UserInfo {
 
   getUserInfo() {
     return {
-      name: this._nameEdit,
-      about: this._aboutEdit,
-      // name: this._name,
-      // about: this._about,
+      name: this._name,
+      about: this._about,
     };
   }
 }

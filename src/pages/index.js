@@ -46,6 +46,25 @@ const userInfo = new UserInfo(profileNameNode, profileAboutNode, profileAvatar);
 
 const api = new Api(apiConfig.address, apiConfig.token, apiConfig.groupID);
 
+const popupDelCard = new PopupDelCard({
+  popup: popupDelCardNode,
+  handleSubmit: () => {
+    api
+      .deleteCard(selectorsObj.cardToDelete.id)
+      .then(() => {
+        popupDelCard.closePopup();
+        selectorsObj.cardToDelete.node.remove();
+        renderLoading(false, popupDelCardNode);
+      })
+      .then(() => {
+        selectorsObj.cardToDelete = {};
+      })
+      .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
+    renderLoading(true, popupDelCardNode);
+  },
+});
+
 const section = new Section(
   {
     renderer: (item) => {
@@ -54,6 +73,10 @@ const section = new Section(
   },
   cardsContainer
 );
+
+// ----
+
+const userDataArr = {};
 
 // ----
 
@@ -68,35 +91,51 @@ function renderLoading(isLoading, node) {
 
 // ----
 
-const userDataArr = {};
+// const getUserData = api
+//   .getUserData()
+//   .then((data) => {
+//     // userDataArr.name = data?.name;
+//     // userDataArr.about = data?.about;
+//     // userDataArr.avatar = data?.avatar;
+//     userDataArr.id = data?._id;
+//     userInfo.setUserInfo(data);
+//     userInfo.updateUserInfo();
 
-const getUserData = api
-  .getUserData()
-  .then((data) => {
-    // userDataArr.name = data?.name;
-    // userDataArr.about = data?.about;
-    // userDataArr.avatar = data?.avatar;
-    userDataArr.id = data?._id;
-    profileNameNode.textContent = data?.name;
-    profileAboutNode.textContent = data?.about;
-    profileAvatar.src = data?.avatar;
+//     // profileNameNode.textContent = data?.name;
+//     // profileAboutNode.textContent = data?.about;
+//     // profileAvatar.src = data?.avatar;
+//   })
+//   .catch((err) =>
+//     console.log("Ошибка при получении данных о пользователе: " + err)
+//   );
+
+// const getCards = api
+//   .getCards()
+//   .then((data) => {
+//     section.renderAll(data);
+//   })
+//   .catch((err) => console.log("Ошибка при получении карточек: " + err));
+
+Promise.all([api.getUserData(), api.getCards()])
+  .then(([userData, cards]) => {
+    userDataArr.id = userData?._id;
+    userInfo.setUserInfo(userData);
+    userInfo.updateUserInfo();
+
+    section.renderAll(cards);
   })
-  .catch((err) =>
-    console.log("Ошибка при получении данных о пользователе: " + err)
-  );
+  .catch((err) => console.log("Ошибка: " + err));
 
-Promise.all([getUserData, getCards]).catch((err) =>
-  console.log("Ошибка при получении данных о пользователе: " + err)
-);
+// ----
 
 profileEditAvatar.addEventListener("click", () => {
   avatarPopup.openPopup();
 });
 
 editButtonNode.addEventListener("click", (evt) => {
-  const userData = userInfo.getUserInfo();
-  nameInput.value = userData?.name.textContent;
-  aboutInput.value = userData?.about.textContent;
+  nameInput.value = userInfo.getUserInfo().name;
+  aboutInput.value = userInfo.getUserInfo().about;
+
   profilePopup.openPopup();
 });
 
@@ -175,38 +214,34 @@ const createCard = (data) => {
         })
         .catch((err) => console.log("Ошибка: " + err));
     },
-    popupDelCard: (id, node) => {
-      popupDelCard().openPopup();
-      popupDelCard(id, node).setEventListeners();
+    popupDelCard: () => {
+      // popupDelCard().openPopup();
+      // popupDelCard(id, node).setEventListeners();
+
+      popupDelCard.openPopup();
+      // return (cardToDelete = id);
     },
   }).createCard(userDataArr.id);
 };
 
-const getCards = api
-  .getCards()
-  .then((data) => {
-    section.renderAll(data);
-  })
-  .catch((err) => console.log("Ошибка при получении карточек: " + err));
-
 // ----
 
-const popupDelCard = (id, node) => {
-  return new PopupDelCard({
-    popup: popupDelCardNode,
-    handleSubmit: () => {
-      renderLoading(true, popupDelCardNode);
-      api
-        .deleteCard(id)
-        .then(() => {
-          popupDelCard().closePopup();
-          node.remove();
-          renderLoading(false, popupDelCardNode);
-        })
-        .catch((err) => console.log("Ошибка при получении карточек: " + err));
-    },
-  });
-};
+// const popupDelCard = (id, node) => {
+//   return new PopupDelCard({
+//     popup: popupDelCardNode,
+//     handleSubmit: () => {
+//       renderLoading(true, popupDelCardNode);
+//       api
+//         .deleteCard(id)
+//         .then(() => {
+//           popupDelCard().closePopup();
+//           node.remove();
+//           renderLoading(false, popupDelCardNode);
+//         })
+//         .catch((err) => console.log("Ошибка при получении карточек: " + err));
+//     },
+//   });
+// };
 
 // popupDelCard().setEventListeners();
 
@@ -246,14 +281,6 @@ const mestoPopup = new PopupWithForm({
 
 // ----
 
-// userInfo.setUserInfo({
-//   name: profileNameNode.textContent,
-//   about: profileAboutNode.textContent,
-//   avatar: profileAvatar.src,
-// });
-
-// ----
-
 // Кнопка добавление новой карточки
 addButtonNode.addEventListener("click", () => {
   mestoPopup.openPopup();
@@ -263,6 +290,8 @@ mestoPopup.setEventListeners();
 profilePopup.setEventListeners();
 popupWithImage.setEventListeners();
 avatarPopup.setEventListeners();
+
+popupDelCard.setEventListeners();
 
 formMesto.enableValidation();
 formProfile.enableValidation();
