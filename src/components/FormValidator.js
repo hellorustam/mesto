@@ -48,7 +48,7 @@ class FormValidator {
     inputList.forEach((input) => {
       input.addEventListener("input", () => {
         this._checkInputValidity(input);
-        this._setButtonState(this._form[0].checkValidity());
+        this._setButtonState(this._form.checkValidity());
       });
     });
   }

@@ -8,16 +8,6 @@ export class PopupWithForm extends Popup {
     this._inputList = this._popup.querySelectorAll(".popup__input");
   }
 
-  // _renderLoading(isLoading) {
-  //   if (isLoading) {
-  //     console.log("loading...");
-
-  //   } else {
-  //     console.log("s-t-o-p");
-
-  //   }
-  // }
-
   _getInputValues() {
     this._inputData = {};
     this._inputList.forEach((element) => {

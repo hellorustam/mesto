@@ -49,8 +49,6 @@ const selectorsObj = {
 
   cardsContainer: ".elements",
   cardTemplate: "#card-template",
-
-  userId: "746c6052f7a7f26f04c96054",
 };
 
 //---
